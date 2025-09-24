@@ -7,7 +7,7 @@ const LayoutMain: FC<
   }>
 > = ({ children }) => {
   return (
-    <div className="wrapper-main">
+    <div className="wrapper-bg-blue">
       <Header />
       {children}
     </div>

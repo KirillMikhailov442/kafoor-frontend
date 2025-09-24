@@ -1,0 +1,99 @@
+.page {
+  display: flex;
+  align-items: flex-end;
+  min-height: 100dvh;
+  max-height: 100dvh;
+  background-color: var(--primary-500);
+  position: relative;
+  overflow-y: hidden;
+}
+
+.container {
+  width: 800px;
+  padding-block: 0;
+}
+
+.champions {
+  display: flex;
+  justify-content: center;
+  margin-inline: auto;
+}
+
+.champion {
+  flex-basis: 33%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  height: 600px;
+}
+
+.nickname {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: var(--primary-0);
+  font-weight: 600;
+  padding: 8px 1.5rem;
+  border-radius: 2rem;
+  margin-inline: auto;
+  margin-bottom: 2rem;
+}
+
+.content {
+  border-radius: 12px 12px 0px 0px;
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.number {
+  margin-top: 4rem;
+  font-size: 4rem;
+  font-weight: 700;
+  width: 100px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.first {
+  .content {
+    background-color: #ffc827;
+  }
+  .number {
+    background-color: #ffd458;
+    color: white;
+  }
+}
+
+.second {
+  top: 100px;
+  .content {
+    background-color: #e0e0e0;
+  }
+  .number {
+    background-color: #f0f0f0;
+    color: #a9a9a9;
+  }
+}
+
+.third {
+  top: 200px;
+  .content {
+    background-color: #ffa751;
+  }
+  .number {
+    background-color: #ffc992;
+    color: #c56302;
+  }
+}
+
+.leaders {
+  position: absolute;
+  top: 4rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 3rem;
+  color: var(--primary-0);
+  font-weight: 700;
+}

@@ -1,0 +1,34 @@
+.header {
+  height: 70px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  color: var(--primary-0);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  transition: background-color 0.25s ease;
+}
+
+.scrolling {
+  background-color: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(2px);
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 1000px;
+}
+
+.step {
+  background-color: rgba(255, 255, 255, 0.2);
+  padding: 8px 20px;
+  border-radius: 2rem;
+  font-weight: 600;
+}
+
+.progressNum {
+  font-weight: 600;
+}
