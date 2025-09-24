@@ -1,0 +1,82 @@
+.content {
+  height: 45px;
+  position: relative;
+  width: 100%;
+  display: flex;
+  color: var(--secondary-500);
+  border: 1px solid var(--secondary-300);
+  overflow: hidden;
+  border-radius: 4px;
+
+  &Error {
+    border-color: var(--error-500);
+  }
+
+  &:focus-within {
+    border-color: var(--secondary-500);
+  }
+}
+.icon {
+  position: absolute;
+  top: 50%;
+  left: 1rem;
+  transform: translateY(-50%);
+  color: var(--secondary-300);
+}
+
+.rightIcon {
+  position: absolute;
+  top: 50%;
+  right: 1rem;
+  transform: translateY(-50%);
+  color: var(--secondary-300);
+}
+
+.eye {
+  position: absolute;
+  top: 50%;
+  right: 1rem;
+  transform: translateY(-50%);
+  color: var(--secondary-300);
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.label {
+  font-size: 14px;
+  color: var(--secondary-500);
+}
+.input {
+  width: 100%;
+  height: 100%;
+  padding-inline: 1rem;
+  transition: border-color 0.2s ease;
+  background-color: transparent;
+  color: var(--secondary-500);
+  outline: none;
+  border-radius: 8px;
+
+  &::placeholder {
+    color: var(--secondary-300);
+  }
+
+  &WithIcon {
+    padding-inline: 3rem 1rem;
+  }
+  &WithRightIcon {
+    padding-inline: 1rem 3rem;
+  }
+  &:focus {
+    outline: none;
+    color: var(--secondary-500);
+    & ~ .icon,
+    ~ .eye {
+      color: var(--secondary-500);
+    }
+  }
+}
+.error {
+  color: var(--error-500);
+  font-size: 12px;
+  margin-left: 1rem;
+}

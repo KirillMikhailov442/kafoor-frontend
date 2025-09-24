@@ -1,7 +1,7 @@
 'use client';
 
 import { NextPage } from 'next';
-import styles from './Login.module.scss';
+import styles from './Register.module.scss';
 import { Button } from '@chakra-ui/react';
 import Link from 'next/link';
 import { z } from 'zod';
@@ -10,6 +10,14 @@ import { useForm } from 'react-hook-form';
 import Input from '@/components/UI/Input';
 
 const schema = z.object({
+  name: z.string().nonempty('Введите имя'),
+  nickname: z
+    .string()
+    .nonempty('Введите никнейм')
+    .regex(/^[a-zA-Z0-9_]{3,16}$/, {
+      message:
+        'Никнейм должен содержать от 3 до 16 символов, только латинские буквы, цифры и подчёркивания',
+    }),
   email: z.string().email('Некорректная почта').min(1, 'Введите email'),
   password: z
     .string()
@@ -24,17 +32,13 @@ const schema = z.object({
 });
 type FormData = z.infer<typeof schema>;
 
-const LoginScreen: NextPage = () => {
+const RegisterScreen: NextPage = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(schema),
-    defaultValues: {
-      email: '',
-      password: '',
-    },
   });
 
   return (
@@ -46,17 +50,29 @@ const LoginScreen: NextPage = () => {
             console.log(data);
           })}
           className={styles.form}>
-          <h4 className="mb-1! text-center">Войти в свой аккаунт</h4>
-          <p className=" mb-6! text-[var(--secondary-400)] text-sm! text-center">
-            Мы рады видеть вас снова!
+          <h4 className="mb-1! text-center">Создать новый аккаунт</h4>
+          <p className=" mb-3! text-[var(--secondary-400)] text-sm! text-center">
+            Мы рады приветствовать нового участника!
           </p>
           <div className="flex flex-col gap-3">
+            <Input
+              {...register('name')}
+              error={errors.name?.message}
+              placeholder="Введите имя"
+              label="Имя"
+            />
             <Input
               {...register('email')}
               error={errors.email?.message}
               type="email"
               placeholder="Введите email"
               label="Email"
+            />
+            <Input
+              {...register('nickname')}
+              error={errors.nickname?.message}
+              placeholder="Введите никнейм"
+              label="Никнейм"
             />
             <Input
               {...register('password')}
@@ -70,10 +86,10 @@ const LoginScreen: NextPage = () => {
               type="submit"
               size={'lg'}
               bg={'var(--primary-500)'}>
-              Войти
+              Зарегистрироваться
             </Button>
             <p className={styles.link}>
-              Нету аккаунта? <Link href={'/register'}>Нужно создать!</Link>
+              Уже есть аккаунт? <Link href={'/login'}>Нужно войти!</Link>
             </p>
           </div>
         </form>
@@ -86,4 +102,4 @@ const LoginScreen: NextPage = () => {
   );
 };
 
-export default LoginScreen;
+export default RegisterScreen;
