@@ -18,3 +18,9 @@
   --laptop: 1024px;
   --laptopL: 1440px;
 }
+
+html[theme='dark'] {
+  :root {
+    --primary-0: #1a1d1f;
+  }
+}

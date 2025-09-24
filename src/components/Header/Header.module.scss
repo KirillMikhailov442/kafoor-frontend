@@ -23,6 +23,7 @@
 .logo {
   font-weight: 900;
   font-size: 2rem;
+  user-select: none;
 
   &Scrolling {
     color: var(--primary-500);
