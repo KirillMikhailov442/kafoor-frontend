@@ -1,0 +1,32 @@
+.card {
+  background-color: var(--primary-0);
+  padding: 1.5rem 1.5rem 10px 1.5rem;
+  border-radius: 8px;
+  border: 1px solid var(--secondary-300);
+}
+
+.header {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.name {
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.nickname {
+  font-size: 12px;
+  color: var(--secondary-300);
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1.5rem;
+}
+
+.status {
+  font-size: 12px;
+}

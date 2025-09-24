@@ -1,0 +1,34 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.page {
+  display: flex;
+}
+
+.container {
+  margin-top: 2rem;
+}
+
+.section {
+  margin-bottom: 3.5rem;
+
+  &Title {
+    color: var(--primary-0);
+    margin-bottom: 10px;
+  }
+}
+
+@media (max-width: 1000px) {
+  .grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,36 @@
+.header {
+  height: 70px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  color: var(--primary-0);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  transition: background-color 0.25s ease;
+}
+
+.scrolling {
+  background-color: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(2px);
+}
+
+.container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.logo {
+  font-weight: 900;
+  font-size: 2rem;
+
+  &Scrolling {
+    color: var(--primary-500);
+  }
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}

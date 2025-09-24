@@ -2,14 +2,15 @@
 @import './libs.scss';
 @import './vars.scss';
 
-.wrapper {
+.wrapper-main {
   display: flex;
+  flex-direction: column;
   min-height: 100dvh;
-  max-width: 100dvw;
-  overflow-x: hidden;
+  background-color: var(--primary-500);
+  position: relative;
 }
 
-.container {
+.k-container {
   width: 1440px;
   margin-inline: auto;
   padding: 0.5rem 10px;
