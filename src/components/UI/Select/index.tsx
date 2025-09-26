@@ -5,6 +5,7 @@ import {
   Portal,
   Select as CSelect,
   createListCollection,
+  SelectValueChangeDetails,
 } from '@chakra-ui/react';
 import { FC } from 'react';
 
@@ -18,14 +19,22 @@ interface SelectProps {
   label: string;
   text?: string;
   defaultValue?: string[];
+  onValueChange?: (details: SelectValueChangeDetails<Framework>) => void;
 }
 
-const Select: FC<SelectProps> = ({ items, label, text, defaultValue }) => {
+const Select: FC<SelectProps> = ({
+  items,
+  label,
+  text,
+  defaultValue,
+  onValueChange,
+}) => {
   const frameworks = createListCollection<Framework>({
     items: items ?? [],
   });
   return (
     <CSelect.Root
+      onValueChange={onValueChange}
       defaultValue={defaultValue}
       collection={frameworks}
       width="320px">

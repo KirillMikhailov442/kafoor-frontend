@@ -7,12 +7,16 @@ import { useQuiz } from '@/store/quiz';
 import clsx from 'clsx';
 
 const OptionQuestion: FC = () => {
-  const { store, index } = useQuiz();
+  const { store, index, editQuestionLimit, editQuestionPoints } = useQuiz();
   const [key, setKey] = useState(0);
+  const [limit, setLimit] = useState(String(store[index].limit));
+  const [points, setPoints] = useState(String(store[index].points));
 
   useEffect(() => {
-    console.log(1);
+    console.log(limit, points);
+  }, [limit, points]);
 
+  useEffect(() => {
     setKey(prev => ++prev);
   }, [index, store.length]);
 
@@ -26,6 +30,9 @@ const OptionQuestion: FC = () => {
   return (
     <aside key={key} className={styles.side}>
       <Select
+        onValueChange={details =>
+          editQuestionLimit(index, Number(details.value[0]))
+        }
         defaultValue={[String(store[index].limit)]}
         items={[
           {
@@ -53,6 +60,9 @@ const OptionQuestion: FC = () => {
         text="Время на вопрос"
       />
       <Select
+        onValueChange={details =>
+          editQuestionPoints(index, Number(details.value[0]))
+        }
         defaultValue={[String(store[index].points)]}
         items={[
           {

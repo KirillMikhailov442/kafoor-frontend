@@ -10,8 +10,13 @@ interface QuizStore {
   //   editQuiz: (data: Omit<IQuiz, 'questions'>) => void;
   addQuestion: () => void;
   removeQuestion: (index: number) => void;
-  //   editQuestion: (data: Omit<IQuestion, 'options'>) => void;
-  //   addOption: (questionId: number) => void;
+  editQuestionLimit: (questionIndex: number, limit: number) => void;
+  editQuestionPoints: (questionIndex: number, points: number) => void;
+  editQuestion: (
+    questionIndex: number,
+    data: Omit<IQuestion, 'options'>,
+  ) => void;
+  addOption: (questionIndex: number) => void;
   //   removeOption: (questionId: number, index: number) => void;
   //   editOption: (data: IOption) => void;
 }
@@ -45,4 +50,43 @@ export const useQuiz = create<QuizStore>(set => ({
       store: [...state.store.filter((_, i) => i != index)],
     }));
   },
+  editQuestionLimit: (questionIndex, limit) =>
+    set(state => ({
+      store: [
+        ...state.store.map((item, i) =>
+          questionIndex == i ? { ...item, limit } : item,
+        ),
+      ],
+    })),
+  editQuestionPoints: (questionIndex, points) =>
+    set(state => ({
+      store: [
+        ...state.store.map((item, i) =>
+          questionIndex == i ? { ...item, points } : item,
+        ),
+      ],
+    })),
+  editQuestion: (questionIndex, data) =>
+    set(state => ({
+      store: [
+        ...state.store.map((item, i) => (questionIndex == i ? data : item)),
+      ],
+    })),
+  addOption: questionIndex =>
+    set(state => {
+      const question = state.store[questionIndex];
+      if (!question) return state;
+
+      const newOptions = question.options
+        ? [...question.options, { text: '', isCorrect: false }]
+        : [{ text: '', isCorrect: false }];
+
+      const updatedQuestion = { ...question, options: newOptions };
+
+      return {
+        store: state.store.map((item, i) =>
+          i === questionIndex ? updatedQuestion : item,
+        ),
+      };
+    }),
 }));
