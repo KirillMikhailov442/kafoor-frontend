@@ -1,0 +1,56 @@
+.side {
+  flex-basis: 200px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  &Content {
+    overflow-y: scroll;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+}
+
+.slide {
+  height: 90px;
+  background-color: var(--secondary-200);
+  margin: 8px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--secondary-300);
+  cursor: pointer;
+
+  &Wrapper {
+    position: relative;
+
+    &:hover .trash {
+      opacity: 1;
+    }
+  }
+
+  &Active {
+    background-color: var(--primary-500);
+    color: var(--primary-0);
+  }
+}
+
+.trash {
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.3);
+  color: white;
+  padding: 6px;
+  border-radius: 50%;
+  bottom: 0;
+  right: 10px;
+  cursor: pointer;
+  opacity: 0;
+}
+
+.add {
+  color: var(--primary-500);
+  font-weight: 600;
+}

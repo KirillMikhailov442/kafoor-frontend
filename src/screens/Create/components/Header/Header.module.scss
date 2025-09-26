@@ -1,0 +1,17 @@
+.header {
+  height: 70px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-inline: 1rem;
+  border-bottom: 1px solid var(--secondary-200);
+}
+
+.saved {
+  font-size: 0.5em;
+}
+
+.actions {
+  display: flex;
+  gap: 1rem;
+}

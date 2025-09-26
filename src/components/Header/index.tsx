@@ -15,6 +15,7 @@ import {
 } from '@chakra-ui/react';
 import avatar_img from '@images/kafoor-user.webp';
 import { Plus } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 const ringCss = defineStyle({
   outlineWidth: '2px',
@@ -24,6 +25,7 @@ const ringCss = defineStyle({
 });
 
 const Header: FC = () => {
+  const { push } = useRouter();
   const [scrolling, setScrolling] = useState(false);
   useEffect(() => {
     window.addEventListener('scroll', () => {
@@ -40,7 +42,11 @@ const Header: FC = () => {
           Kafoor
         </Link>
         <nav className={styles.nav}>
-          <Button rounded={'full'} colorPalette={'blue'} variant={'solid'}>
+          <Button
+            onClick={() => push('/create')}
+            rounded={'full'}
+            colorPalette={'blue'}
+            variant={'solid'}>
             <Plus />
             Создать викторину
           </Button>

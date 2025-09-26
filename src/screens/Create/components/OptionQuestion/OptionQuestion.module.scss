@@ -1,0 +1,14 @@
+.side {
+  flex-basis: 280px;
+  margin: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.empty {
+  align-items: center;
+  justify-content: center;
+  color: var(--secondary-400);
+  font-weight: 700;
+}

@@ -20,7 +20,7 @@ const Question: NextPage = () => {
               at labore voluptatibus?
             </h4>
             <div className={styles.file}>
-              <Image alt="img" src={img} />
+              <Image loading="lazy" alt="img" src={img} />
             </div>
           </div>
           <div className={styles.bottom}>

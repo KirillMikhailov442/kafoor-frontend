@@ -11,6 +11,7 @@ interface ModalStore {
 export const useModals = create<ModalStore>(set => ({
   modals: {
     ['edit-profile']: false,
+    ['create-quiz']: false,
   },
 
   openModal: name =>
