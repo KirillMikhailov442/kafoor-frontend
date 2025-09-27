@@ -7,11 +7,27 @@
   border-bottom: 1px solid var(--secondary-200);
 }
 
+.logo {
+  background-color: var(--primary-500);
+  color: white;
+  width: 40px;
+  aspect-ratio: 1;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.name {
+  font-size: 1.25rem;
+}
+
 .saved {
   font-size: 0.5em;
 }
 
 .actions {
   display: flex;
+  align-items: flex-start;
   gap: 1rem;
 }

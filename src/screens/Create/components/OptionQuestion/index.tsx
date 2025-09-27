@@ -9,12 +9,6 @@ import clsx from 'clsx';
 const OptionQuestion: FC = () => {
   const { store, index, editQuestionLimit, editQuestionPoints } = useQuiz();
   const [key, setKey] = useState(0);
-  const [limit, setLimit] = useState(String(store[index].limit));
-  const [points, setPoints] = useState(String(store[index].points));
-
-  useEffect(() => {
-    console.log(limit, points);
-  }, [limit, points]);
 
   useEffect(() => {
     setKey(prev => ++prev);

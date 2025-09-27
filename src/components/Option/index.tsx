@@ -1,30 +1,37 @@
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import styles from './Option.module.scss';
 import clsx from 'clsx';
 import { Checkbox, Editable } from '@chakra-ui/react';
 import { Trash } from 'lucide-react';
+import { useQuiz } from '@/store/quiz';
 
 interface OptionProps {
-  index: number;
+  number: number;
   text: string;
-  isTrue?: boolean;
+  isCorrect: boolean;
+  onDelete?: () => void;
 }
 
 const BG_COLOR = ['#01ED5A', '#FF6263', '#FFBC02', '#63B3FF'];
 const LETTERS = ['A', 'B', 'C', 'D'];
 
-const Option: FC<OptionProps> = ({ text, index, isTrue }) => {
-  const [value, setValue] = useState('');
-  console.log(value);
+const Option: FC<OptionProps> = ({ text, number, isCorrect, onDelete }) => {
+  const [value, setValue] = useState(text);
+  const [checked, setChecked] = useState<boolean>(isCorrect);
+  const { editOption, index } = useQuiz();
+
+  useEffect(() => {
+    editOption(index, number - 1, { isCorrect: checked, text: value });
+  }, [value, checked]);
 
   return (
     <label className={clsx(styles.option)}>
       <div
         style={{
-          backgroundColor: BG_COLOR[index - 1],
+          backgroundColor: BG_COLOR[number - 1],
         }}
         className={styles.letter}>
-        {LETTERS[index - 1]}
+        {LETTERS[number - 1]}
       </div>
       <Editable.Root
         maxLength={50}
@@ -44,16 +51,19 @@ const Option: FC<OptionProps> = ({ text, index, isTrue }) => {
       <Checkbox.Root
         className={styles.checkbox}
         colorPalette={'green'}
+        checked={checked}
         size={'lg'}>
-        <Checkbox.HiddenInput checked={isTrue} />
+        <Checkbox.HiddenInput onChange={e => setChecked(e.target.checked)} />
         <Checkbox.Control rounded={'full'}>
           <Checkbox.Indicator />
         </Checkbox.Control>
         <Checkbox.Label />
       </Checkbox.Root>
-      <button className={styles.delete}>
-        <Trash size={20} />
-      </button>
+      {onDelete && (
+        <button onClick={onDelete} className={styles.delete}>
+          <Trash size={20} />
+        </button>
+      )}
     </label>
   );
 };

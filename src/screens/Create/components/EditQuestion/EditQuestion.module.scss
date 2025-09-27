@@ -1,5 +1,6 @@
 .wrapper {
   flex-grow: 1;
+  flex-shrink: 0;
   background-color: var(--primary-500);
   display: flex;
   padding-block: 2rem 3rem;
@@ -27,6 +28,10 @@
   font-size: 1.5rem;
   display: flex;
   justify-content: center;
+
+  & * {
+    color: white;
+  }
 
   &::placeholder {
     text-align: center;
