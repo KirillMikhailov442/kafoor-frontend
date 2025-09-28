@@ -8,13 +8,15 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import Input from '@/components/UI/Input';
+import { useLogin } from '@/hooks/User';
+import { useRouter } from 'next/navigation';
 
 const schema = z.object({
   email: z.string().email('Некорректная почта').min(1, 'Введите email'),
   password: z
     .string()
     .min(8, 'Пароль должен быть не менее 8 символов')
-    .regex(/[A-Z]/, 'Пароль должен содержать хотя бы одну заглавную букву')
+    // .regex(/[A-Z]/, 'Пароль должен содержать хотя бы одну заглавную букву')
     .regex(/[a-z]/, 'Пароль должен содержать хотя бы одну строчную букву')
     .regex(/[0-9]/, 'Пароль должен содержать хотя бы одну цифру')
     .regex(
@@ -25,9 +27,11 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>;
 
 const LoginScreen: NextPage = () => {
+  const { push } = useRouter();
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(schema),
@@ -37,13 +41,31 @@ const LoginScreen: NextPage = () => {
     },
   });
 
+  const { mutate, isLoading } = useLogin(
+    data => {
+      localStorage.setItem('token', data.data.accessToken);
+      localStorage.setItem('refresh-token', data.data.refreshToken);
+      setTimeout(() => push('/'), 0.255);
+    },
+    () => {
+      setError('email', {
+        type: 'required',
+        message: 'Неверная почта или пароль',
+      });
+      setError('password', {
+        type: 'required',
+        message: 'Неверная почта или пароль',
+      });
+    },
+  );
+
   return (
     <div className={styles.page}>
       <main className={styles.main}>
         <h1 className={styles.title}>Kafoor</h1>
         <form
           onSubmit={handleSubmit(data => {
-            console.log(data);
+            mutate(data);
           })}
           className={styles.form}>
           <h4 className="mb-1! text-center">Войти в свой аккаунт</h4>
@@ -66,7 +88,8 @@ const LoginScreen: NextPage = () => {
               label="Пароль"
             />
             <Button
-              disabled={Object.keys(errors).length > 0}
+              disabled={Object.keys(errors).length > 0 || isLoading}
+              loading={isLoading}
               type="submit"
               size={'lg'}
               bg={'var(--primary-500)'}>

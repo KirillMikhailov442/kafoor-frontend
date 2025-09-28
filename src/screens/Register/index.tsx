@@ -8,6 +8,10 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import Input from '@/components/UI/Input';
+import { useRegister } from '@/hooks/User';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
+import { toaster } from '@/components/ui/toaster';
 
 const schema = z.object({
   name: z.string().nonempty('Введите имя'),
@@ -22,7 +26,7 @@ const schema = z.object({
   password: z
     .string()
     .min(8, 'Пароль должен быть не менее 8 символов')
-    .regex(/[A-Z]/, 'Пароль должен содержать хотя бы одну заглавную букву')
+    // .regex(/[A-Z]/, 'Пароль должен содержать хотя бы одну заглавную букву')
     .regex(/[a-z]/, 'Пароль должен содержать хотя бы одну строчную букву')
     .regex(/[0-9]/, 'Пароль должен содержать хотя бы одну цифру')
     .regex(
@@ -33,6 +37,7 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>;
 
 const RegisterScreen: NextPage = () => {
+  const { push } = useRouter();
   const {
     register,
     handleSubmit,
@@ -41,13 +46,32 @@ const RegisterScreen: NextPage = () => {
     resolver: zodResolver(schema),
   });
 
+  useEffect(() => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('refresh-token');
+  }, []);
+
+  const { mutate, isLoading } = useRegister(
+    data => {
+      localStorage.setItem('token', data.data.accessToken);
+      localStorage.setItem('refresh-token', data.data.refreshToken);
+      setTimeout(() => push('/'), 255);
+    },
+    error => {
+      toaster.create({
+        title: error.response?.data.message,
+        type: 'error',
+      });
+    },
+  );
+
   return (
     <div className={styles.page}>
       <main className={styles.main}>
         <h1 className={styles.title}>Kafoor</h1>
         <form
           onSubmit={handleSubmit(data => {
-            console.log(data);
+            mutate({ ...data, nickname: `@${data.nickname}` });
           })}
           className={styles.form}>
           <h4 className="mb-1! text-center">Создать новый аккаунт</h4>
@@ -82,7 +106,8 @@ const RegisterScreen: NextPage = () => {
               label="Пароль"
             />
             <Button
-              disabled={Object.keys(errors).length > 0}
+              disabled={Object.keys(errors).length > 0 || isLoading}
+              loading={isLoading}
               type="submit"
               size={'lg'}
               bg={'var(--primary-500)'}>

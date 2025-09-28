@@ -25,7 +25,7 @@ const ringCss = defineStyle({
 });
 
 const Header: FC = () => {
-  const { push } = useRouter();
+  const { push, replace } = useRouter();
   const [scrolling, setScrolling] = useState(false);
   useEffect(() => {
     window.addEventListener('scroll', () => {
@@ -75,7 +75,15 @@ const Header: FC = () => {
                       Профиль
                     </Link>
                   </Menu.Item>
-                  <Menu.Item value="exit">Выйти</Menu.Item>
+                  <Menu.Item
+                    onClick={() => {
+                      localStorage.removeItem('token');
+                      localStorage.removeItem('refresh-token');
+                      replace('/login');
+                    }}
+                    value="exit">
+                    Выйти
+                  </Menu.Item>
                 </Menu.Content>
               </Menu.Positioner>
             </Portal>

@@ -2,13 +2,7 @@
 
 import { FC, useState } from 'react';
 import styles from './Header.module.scss';
-import {
-  Button,
-  Editable,
-  Field,
-  InputGroup,
-  NumberInput,
-} from '@chakra-ui/react';
+import { Button, Editable, InputGroup, NumberInput } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Users } from 'lucide-react';
