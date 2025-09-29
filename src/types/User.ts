@@ -22,4 +22,7 @@ export interface IUser {
   name: string;
   nickname: string;
   email: string;
+  confirmed: boolean;
 }
+
+export interface IUserUpdate extends Omit<IUser, 'id'> {}

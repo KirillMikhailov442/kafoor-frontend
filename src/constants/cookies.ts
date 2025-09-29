@@ -1,0 +1,2 @@
+export const COOKIE_TOKEN_LIFESPAN = 1 / 24; // 1 / 96
+export const COOKIE_TOKEN_REFRESH_LIFESPAN = 3;

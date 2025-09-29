@@ -1,6 +1,7 @@
-import { useMutation } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
 import userService from '@api/services/User';
 import {
+  IUser,
   IUserLogin,
   IUserRegister,
   IUserRegisterRes,
@@ -27,6 +28,18 @@ export const useRegister = (
   return useMutation({
     mutationKey: ['register'],
     mutationFn: (body: IUserRegister) => userService.register(body),
+    onSuccess,
+    onError,
+  });
+};
+
+export const useProfile = (
+  onSuccess?: (data: { data: IUser }) => void,
+  onError?: (error: AxiosError<{ message: string }>) => void,
+) => {
+  return useQuery({
+    queryKey: ['profile'],
+    queryFn: () => userService.profile(),
     onSuccess,
     onError,
   });

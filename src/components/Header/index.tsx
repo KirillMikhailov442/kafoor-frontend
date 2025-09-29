@@ -12,10 +12,13 @@ import {
   Float,
   Menu,
   Portal,
+  SkeletonCircle,
 } from '@chakra-ui/react';
 import avatar_img from '@images/kafoor-user.webp';
 import { Plus } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import Cookies from 'js-cookie';
+import { useProfile } from '@/hooks/User';
 
 const ringCss = defineStyle({
   outlineWidth: '2px',
@@ -25,6 +28,13 @@ const ringCss = defineStyle({
 });
 
 const Header: FC = () => {
+  const { data, isLoading } = useProfile(
+    () => {},
+    () => {
+      alert('Ошибка логина');
+    },
+  );
+
   const { push, replace } = useRouter();
   const [scrolling, setScrolling] = useState(false);
   useEffect(() => {
@@ -50,44 +60,50 @@ const Header: FC = () => {
             <Plus />
             Создать викторину
           </Button>
-          <Menu.Root>
-            <Menu.Trigger asChild>
-              <div style={{ cursor: 'pointer' }}>
-                <Avatar.Root css={ringCss} colorPalette={'whiteAlpha'}>
-                  <Avatar.Fallback name="Segun Adebayo" />
-                  <Avatar.Image src={avatar_img.src} />
-                  <Float placement="bottom-end" offsetX="1" offsetY="1">
-                    <Circle
-                      bg="yellow.500"
-                      size="8px"
-                      outline="0.2px solid"
-                      outlineColor="bg"
-                    />
-                  </Float>
-                </Avatar.Root>
-              </div>
-            </Menu.Trigger>
-            <Portal>
-              <Menu.Positioner>
-                <Menu.Content>
-                  <Menu.Item value="profile">
-                    <Link className="w-full" href={'/profile'}>
-                      Профиль
-                    </Link>
-                  </Menu.Item>
-                  <Menu.Item
-                    onClick={() => {
-                      localStorage.removeItem('token');
-                      localStorage.removeItem('refresh-token');
-                      replace('/login');
-                    }}
-                    value="exit">
-                    Выйти
-                  </Menu.Item>
-                </Menu.Content>
-              </Menu.Positioner>
-            </Portal>
-          </Menu.Root>
+          {data?.data?.id ? (
+            <Menu.Root>
+              <Menu.Trigger asChild>
+                <div style={{ cursor: 'pointer' }}>
+                  <Avatar.Root css={ringCss} colorPalette={'whiteAlpha'}>
+                    <Avatar.Fallback name={data.data.name} />
+                    <Avatar.Image src={avatar_img.src} />
+                    {!data.data.confirmed && (
+                      <Float placement="bottom-end" offsetX="1" offsetY="1">
+                        <Circle
+                          bg="yellow.500"
+                          size="8px"
+                          outline="0.2px solid"
+                          outlineColor="bg"
+                        />
+                      </Float>
+                    )}
+                  </Avatar.Root>
+                </div>
+              </Menu.Trigger>
+              <Portal>
+                <Menu.Positioner>
+                  <Menu.Content>
+                    <Menu.Item value="profile">
+                      <Link className="w-full" href={'/profile'}>
+                        Профиль
+                      </Link>
+                    </Menu.Item>
+                    <Menu.Item
+                      onClick={() => {
+                        Cookies.remove('token');
+                        Cookies.remove('refresh-token');
+                        replace('/login');
+                      }}
+                      value="exit">
+                      Выйти
+                    </Menu.Item>
+                  </Menu.Content>
+                </Menu.Positioner>
+              </Portal>
+            </Menu.Root>
+          ) : (
+            <SkeletonCircle size="10" />
+          )}
         </nav>
       </div>
     </header>

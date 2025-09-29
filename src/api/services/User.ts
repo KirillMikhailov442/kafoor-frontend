@@ -4,6 +4,7 @@ import {
   IUserRegister,
   IUserRegisterRes,
   IUserTokens,
+  IUserUpdate,
 } from '@/types/User';
 import { authService } from '../configs';
 
@@ -19,6 +20,21 @@ class UserService {
 
   public register(body: IUserRegister) {
     return authService.post<{ data: IUserRegisterRes }>(this.baseUrl, body);
+  }
+
+  public update(body: IUserUpdate) {
+    return authService.put<{ data: IUser }>(this.baseUrl, body);
+  }
+
+  public updateTokens(refresh: string) {
+    return authService.patch<{ data: IUserTokens }>(
+      this.baseUrl + '/update-tkens',
+      { refreshToken: refresh },
+    );
+  }
+
+  public profile() {
+    return authService.get(this.baseUrl + '/profile');
   }
 }
 

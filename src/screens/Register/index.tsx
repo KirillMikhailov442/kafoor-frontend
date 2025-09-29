@@ -12,6 +12,11 @@ import { useRegister } from '@/hooks/User';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { toaster } from '@/components/ui/toaster';
+import Cookies from 'js-cookie';
+import {
+  COOKIE_TOKEN_LIFESPAN,
+  COOKIE_TOKEN_REFRESH_LIFESPAN,
+} from '@/constants/cookies';
 
 const schema = z.object({
   name: z.string().nonempty('Введите имя'),
@@ -53,8 +58,12 @@ const RegisterScreen: NextPage = () => {
 
   const { mutate, isLoading } = useRegister(
     data => {
-      localStorage.setItem('token', data.data.accessToken);
-      localStorage.setItem('refresh-token', data.data.refreshToken);
+      Cookies.set('token', data.data.accessToken, {
+        expires: COOKIE_TOKEN_LIFESPAN,
+      });
+      Cookies.set('refresh-token', data.data.refreshToken, {
+        expires: COOKIE_TOKEN_REFRESH_LIFESPAN,
+      });
       setTimeout(() => push('/'), 255);
     },
     error => {

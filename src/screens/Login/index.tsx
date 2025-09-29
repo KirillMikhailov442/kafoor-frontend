@@ -9,7 +9,12 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import Input from '@/components/UI/Input';
 import { useLogin } from '@/hooks/User';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
+import Cookies from 'js-cookie';
+import {
+  COOKIE_TOKEN_LIFESPAN,
+  COOKIE_TOKEN_REFRESH_LIFESPAN,
+} from '@/constants/cookies';
 
 const schema = z.object({
   email: z.string().email('Некорректная почта').min(1, 'Введите email'),
@@ -28,6 +33,7 @@ type FormData = z.infer<typeof schema>;
 
 const LoginScreen: NextPage = () => {
   const { push } = useRouter();
+  const searchParams = useSearchParams();
   const {
     register,
     handleSubmit,
@@ -43,9 +49,13 @@ const LoginScreen: NextPage = () => {
 
   const { mutate, isLoading } = useLogin(
     data => {
-      localStorage.setItem('token', data.data.accessToken);
-      localStorage.setItem('refresh-token', data.data.refreshToken);
-      setTimeout(() => push('/'), 0.255);
+      Cookies.set('token', data.data.accessToken, {
+        expires: COOKIE_TOKEN_LIFESPAN,
+      });
+      Cookies.set('refresh-token', data.data.refreshToken, {
+        expires: COOKIE_TOKEN_REFRESH_LIFESPAN,
+      });
+      setTimeout(() => push(searchParams.get('from') || '/'), 0.255);
     },
     () => {
       setError('email', {
