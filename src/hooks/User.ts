@@ -6,6 +6,7 @@ import {
   IUserRegister,
   IUserRegisterRes,
   IUserTokens,
+  IUserUpdate,
 } from '@/types/User';
 import { AxiosError } from 'axios';
 
@@ -40,6 +41,18 @@ export const useProfile = (
   return useQuery({
     queryKey: ['profile'],
     queryFn: () => userService.profile(),
+    onSuccess,
+    onError,
+  });
+};
+
+export const useProfileUpdate = (
+  onSuccess?: (data: { data: IUser }) => void,
+  onError?: (error: AxiosError<{ message: string }>) => void,
+) => {
+  return useMutation({
+    mutationKey: ['profile-update'],
+    mutationFn: (body: IUserUpdate) => userService.update(body),
     onSuccess,
     onError,
   });

@@ -25,4 +25,5 @@ export interface IUser {
   confirmed: boolean;
 }
 
-export interface IUserUpdate extends Omit<IUser, 'id'> {}
+export interface IUserUpdate
+  extends Pick<IUser, 'name' | 'email' | 'nickname'> {}

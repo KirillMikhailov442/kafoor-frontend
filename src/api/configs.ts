@@ -5,8 +5,21 @@ const authService = axios.create({
   baseURL: 'http://localhost:8001',
   headers: {
     Authorization:
-      'Bearer ' + (Cookies.get('token') ? Cookies.get('token') : null),
+      'Bearer' + (Cookies.get('token') ? Cookies.get('token') : null),
   },
 });
+
+authService.interceptors.request.use(
+  config => {
+    const token = Cookies.get('token');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  error => {
+    return Promise.reject(error);
+  },
+);
 
 export { authService };
