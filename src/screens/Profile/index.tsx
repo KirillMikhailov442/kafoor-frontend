@@ -67,16 +67,18 @@ const ProfileScreen: NextPage = () => {
             Выйти
           </Button>
         </footer>
-        <Alert.Root className="!mt-6" status="warning">
-          <Alert.Indicator />
-          <Alert.Title>
-            Вы не подтвердили свой аккаунт. Подтвердите аккаунт, перейдя по
-            ссылке в письме
-          </Alert.Title>
-          <Link alignSelf="center" fontWeight="medium">
-            Отправить письмо
-          </Link>
-        </Alert.Root>
+        {!data?.data.confirmed && (
+          <Alert.Root className="!mt-6" status="warning">
+            <Alert.Indicator />
+            <Alert.Title>
+              Вы не подтвердили свой аккаунт. Подтвердите аккаунт, перейдя по
+              ссылке в письме
+            </Alert.Title>
+            <Link alignSelf="center" fontWeight="medium">
+              Отправить письмо
+            </Link>
+          </Alert.Root>
+        )}
       </div>
     </div>
   );

@@ -22,4 +22,25 @@ authService.interceptors.request.use(
   },
 );
 
-export { authService };
+const quizService = axios.create({
+  baseURL: 'http://localhost:8002',
+  headers: {
+    Authorization:
+      'Bearer' + (Cookies.get('token') ? Cookies.get('token') : null),
+  },
+});
+
+quizService.interceptors.request.use(
+  config => {
+    const token = Cookies.get('token');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  error => {
+    return Promise.reject(error);
+  },
+);
+
+export { authService, quizService };

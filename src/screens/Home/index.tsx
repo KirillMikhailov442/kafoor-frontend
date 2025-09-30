@@ -2,6 +2,7 @@ import clsx from 'clsx';
 import styles from './Home.module.scss';
 import { NextPage } from 'next';
 import QuizCard from '@/components/Cards/Quiz';
+import Loading from './Loading';
 
 const HomeScreen: NextPage = () => {
   return (
