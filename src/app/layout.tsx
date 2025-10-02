@@ -20,7 +20,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html suppressHydrationWarning lang="en">
+    <html suppressHydrationWarning lang="ru">
       <Providers>
         <Toaster />
         <body className={`${golosText.className} antialiased`}>{children}</body>

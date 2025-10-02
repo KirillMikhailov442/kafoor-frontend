@@ -1,6 +1,6 @@
+import { socket } from '@/api/socket';
 import Header from '@/components/Header';
 import { FC } from 'react';
-
 const LayoutMain: FC<
   Readonly<{
     children: React.ReactNode;
