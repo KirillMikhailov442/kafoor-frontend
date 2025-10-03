@@ -46,6 +46,19 @@ export const useProfile = (
   });
 };
 
+export const useProfileWithoutEnabled = (
+  onSuccess?: (data: { data: IUser }) => void,
+  onError?: (error: AxiosError<{ message: string }>) => void,
+) => {
+  return useQuery({
+    queryKey: ['profile'],
+    queryFn: () => userService.profile(),
+    enabled: false,
+    onSuccess,
+    onError,
+  });
+};
+
 export const useProfileUpdate = (
   onSuccess?: (data: { data: IUser }) => void,
   onError?: (error: AxiosError<{ message: string }>) => void,

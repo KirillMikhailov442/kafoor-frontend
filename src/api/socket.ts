@@ -2,7 +2,7 @@ import io from 'socket.io-client';
 import Cookies from 'js-cookie';
 
 export const socket = io('http://localhost:8083', {
-  transports: ['websocket', 'polling'], // Важно указать оба транспорта
+  transports: ['websocket', 'polling'],
   upgrade: true,
   forceNew: true,
   reconnection: true,
