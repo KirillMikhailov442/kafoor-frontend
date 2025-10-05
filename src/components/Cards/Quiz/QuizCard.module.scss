@@ -24,7 +24,24 @@
 .footer {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   margin-top: 1.5rem;
+}
+
+.start {
+  width: 45px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  background-color: var(--primary-500);
+  transition: background-color 0.25s ease;
+
+  &:hover {
+    background-color: var(--primary-600);
+  }
 }
 
 .status {

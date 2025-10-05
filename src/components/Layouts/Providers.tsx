@@ -5,7 +5,14 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { ThemeProvider } from 'next-themes';
 import { Provider } from '../ui/provider';
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: false,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 const Providers: FC<{ children: ReactNode }> = ({ children }) => {
   return (
     <QueryClientProvider client={queryClient}>

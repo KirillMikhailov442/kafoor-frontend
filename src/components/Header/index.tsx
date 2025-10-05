@@ -19,6 +19,7 @@ import { Plus } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
 import { useProfile } from '@/hooks/User';
+import { useCreateQuiz } from '@/hooks/Quiz';
 
 const ringCss = defineStyle({
   outlineWidth: '2px',
@@ -28,12 +29,15 @@ const ringCss = defineStyle({
 });
 
 const Header: FC = () => {
-  const { data, isLoading } = useProfile(
+  const profile = useProfile(
     () => {},
     () => {
       alert('Ошибка логина');
     },
   );
+  const createQuiz = useCreateQuiz(data => {
+    push(`/create/${data.data.id}`);
+  });
 
   const { push, replace } = useRouter();
   const [scrolling, setScrolling] = useState(false);
@@ -53,21 +57,24 @@ const Header: FC = () => {
         </Link>
         <nav className={styles.nav}>
           <Button
-            onClick={() => push('/create')}
+            loading={createQuiz.isLoading}
+            onClick={() =>
+              createQuiz.mutate({ name: 'Новая викторина', maxMember: 5 })
+            }
             rounded={'full'}
             colorPalette={'blue'}
             variant={'solid'}>
             <Plus />
             Создать викторину
           </Button>
-          {data?.data?.id ? (
+          {profile.data?.data?.id ? (
             <Menu.Root>
               <Menu.Trigger asChild>
                 <div style={{ cursor: 'pointer' }}>
                   <Avatar.Root css={ringCss} colorPalette={'whiteAlpha'}>
-                    <Avatar.Fallback name={data.data.name} />
+                    <Avatar.Fallback name={profile.data.data.name} />
                     <Avatar.Image src={avatar_img.src} />
-                    {!data.data.confirmed && (
+                    {!profile.data.data.confirmed && (
                       <Float placement="bottom-end" offsetX="1" offsetY="1">
                         <Circle
                           bg="yellow.500"

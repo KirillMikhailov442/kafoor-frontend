@@ -6,6 +6,7 @@
 
 .page {
   display: flex;
+  flex-grow: 1;
 }
 
 .container {
@@ -19,6 +20,15 @@
     color: var(--primary-0);
     margin-bottom: 10px;
   }
+}
+
+.noResult {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary-0);
+  gap: 1rem;
 }
 
 @media (max-width: 1000px) {
