@@ -26,3 +26,30 @@ export const useCreateQuiz = (
     onError,
   });
 };
+
+export const useGetQuiz = (
+  id: number,
+  onSuccess?: (data: { data: IQuiz }) => void,
+  onError?: (error: AxiosError<{ message: string }>) => void,
+) => {
+  return useQuery({
+    queryKey: ['quiz', id],
+    queryFn: () => QuizService.findById(id),
+    onSuccess,
+    onError,
+  });
+};
+
+export const useGetQuizWithoutEnabled = (
+  id: number,
+  onSuccess?: (data: { data: IQuiz }) => void,
+  onError?: (error: AxiosError<{ message: string }>) => void,
+) => {
+  return useQuery({
+    queryKey: ['quiz', id],
+    queryFn: () => QuizService.findById(id),
+    enabled: false,
+    onSuccess,
+    onError,
+  });
+};

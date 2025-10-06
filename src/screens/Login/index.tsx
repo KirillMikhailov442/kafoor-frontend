@@ -33,7 +33,7 @@ type FormData = z.infer<typeof schema>;
 
 const LoginScreen: NextPage = () => {
   const { push } = useRouter();
-  const searchParams = useSearchParams();
+  // const searchParams = useSearchParams();
   const {
     register,
     handleSubmit,
@@ -55,7 +55,7 @@ const LoginScreen: NextPage = () => {
       Cookies.set('refresh-token', data.data.refreshToken, {
         expires: COOKIE_TOKEN_REFRESH_LIFESPAN,
       });
-      setTimeout(() => push(searchParams.get('from') || '/'), 0.255);
+      setTimeout(() => push('/'), 0.255);
     },
     () => {
       setError('email', {

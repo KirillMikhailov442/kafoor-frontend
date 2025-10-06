@@ -15,6 +15,7 @@ export const useLogin = (
   onError?: (error: AxiosError<{ message: string }>) => void,
 ) => {
   return useMutation({
+    // @ts-ignore
     mutationKey: ['login'],
     mutationFn: (body: IUserLogin) => userService.login(body),
     onSuccess,
@@ -27,6 +28,7 @@ export const useRegister = (
   onError?: (error: AxiosError<{ message: string }>) => void,
 ) => {
   return useMutation({
+    // @ts-ignore
     mutationKey: ['register'],
     mutationFn: (body: IUserRegister) => userService.register(body),
     onSuccess,
@@ -64,6 +66,7 @@ export const useProfileUpdate = (
   onError?: (error: AxiosError<{ message: string }>) => void,
 ) => {
   return useMutation({
+    // @ts-ignore
     mutationKey: ['profile-update'],
     mutationFn: (body: IUserUpdate) => userService.update(body),
     onSuccess,

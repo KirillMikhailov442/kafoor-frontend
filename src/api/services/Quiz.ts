@@ -11,6 +11,10 @@ class QuizService {
   public create(body: IQuizCreate) {
     return quizService.post<IQuiz>(this.baseUrl, body);
   }
+
+  public findById(id: number) {
+    return quizService.get(`${this.baseUrl}/${id}`);
+  }
 }
 
 export default new QuizService();

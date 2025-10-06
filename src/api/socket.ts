@@ -14,7 +14,7 @@ export const socket = io('http://localhost:8083', {
 });
 
 export enum SOCKET_ACTION {
-  JOIN_QUIZ = 'JOIN_QUIZ',
-  LEAVE_QUIZ = 'LEAVE_QUIZ',
+  JOIN_TO_QUIZ = 'JOIN_TO_QUIZ',
+  LEAVE_FROM_QUIZ = 'LEAVE_FROM_QUIZ',
   TELL_ABOUT_YOURSELF = 'TELL_ABOUT_YOURSELF',
 }

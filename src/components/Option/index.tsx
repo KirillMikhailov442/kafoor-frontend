@@ -21,6 +21,7 @@ const Option: FC<OptionProps> = ({ text, number, isCorrect, onDelete }) => {
   const { editOption, index } = useQuiz();
 
   useEffect(() => {
+    // @ts-ignore
     editOption(index, number - 1, { isCorrect: checked, text: value });
   }, [value, checked]);
 
