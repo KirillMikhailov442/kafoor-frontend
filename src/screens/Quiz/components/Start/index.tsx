@@ -10,7 +10,7 @@ import { useProfileWithoutEnabled } from '@/hooks/User';
 import { useEffect, useRef, useState } from 'react';
 import { socket, SOCKET_ACTION } from '@/api/socket';
 import Loading from '../Loading';
-import { ITellMyYourself } from '@/types/Socket';
+import { ILeaveFromQuiz, ITellMyYourself } from '@/types/Socket';
 import { IUser } from '@/types/User';
 import { useGetQuizWithoutEnabled } from '@/hooks/Quiz';
 import { toaster } from '@/components/ui/toaster';
@@ -68,11 +68,32 @@ const Start: NextPage = () => {
       if (!hasUser) setMembers(prev => [...prev, data]);
     });
 
-    // socket.on(SOCKET_ACTION.LEAVE_FROM_QUIZ, (data: ILeaveFromQuiz) => {
-    //   setMembers(prev =>
-    //     prev.filter(member => member.socketId != data.socketId),
-    //   );
-    // });
+    socket.on(SOCKET_ACTION.LEAVE_FROM_QUIZ, (socketId: string) => {
+      setMembers(prev => prev.filter(member => member.socketId != socketId));
+    });
+
+    socket.on('disconnect', () => {
+      socket.emit(SOCKET_ACTION.LEAVE_FROM_QUIZ, {
+        quizId,
+        socketId: socket.id,
+      });
+    });
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener('beforeunload', () => {
+      socket.emit(SOCKET_ACTION.LEAVE_FROM_QUIZ, {
+        quizId,
+        socketId: socket.id,
+      });
+    });
+
+    window.addEventListener('pagehide', () => {
+      socket.emit(SOCKET_ACTION.LEAVE_FROM_QUIZ, {
+        quizId,
+        socketId: socket.id,
+      });
+    });
   }, []);
 
   useEffect(() => {
@@ -122,7 +143,10 @@ const Start: NextPage = () => {
             </Button>
             <Button
               onClick={() => {
-                socket.emit(SOCKET_ACTION.LEAVE_FROM_QUIZ, socket.id);
+                socket.emit(SOCKET_ACTION.LEAVE_FROM_QUIZ, {
+                  quizId,
+                  socketId: socket.id,
+                });
                 push('/');
               }}
               color={'white'}
