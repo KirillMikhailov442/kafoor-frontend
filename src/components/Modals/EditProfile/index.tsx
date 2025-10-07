@@ -65,6 +65,7 @@ const EditProfileModal: FC = () => {
     <Dialog.Root
       placement={'center'}
       open={modals['edit-profile']}
+      closeOnInteractOutside={!update.isLoading}
       onOpenChange={() => toggleModal('edit-profile')}>
       <Portal>
         <Dialog.Backdrop />

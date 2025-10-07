@@ -15,6 +15,10 @@ class QuizService {
   public findById(id: number) {
     return quizService.get(`${this.baseUrl}/${id}`);
   }
+
+  public deleteById(id: number) {
+    return quizService.delete(`${this.baseUrl}/${id}`);
+  }
 }
 
 export default new QuizService();

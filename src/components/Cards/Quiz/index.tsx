@@ -1,9 +1,13 @@
 import { FC } from 'react';
 import styles from './QuizCard.module.scss';
-import { Avatar, Badge, defineStyle } from '@chakra-ui/react';
+import { Avatar, Badge, defineStyle, Menu, Portal } from '@chakra-ui/react';
 import avatar_img from '@images/kafoor-user.webp';
 import { FaPlay } from 'react-icons/fa';
 import { IQuiz } from '@/types/Quiz';
+import Link from 'next/link';
+import { Pencil, Play, Trash } from 'lucide-react';
+import { useModals } from '@/store/modals';
+import { useRouter } from 'next/navigation';
 
 const ringCss = defineStyle({
   outlineWidth: '2px',
@@ -26,18 +30,59 @@ const QuizCard: FC<QuizCardProps> = ({
   countQuestions,
   endedAt,
 }) => {
+  const { push } = useRouter();
+  const { openModal, setParam } = useModals();
+  if (endedAt == 0) {
+    return (
+      <Menu.Root>
+        <Menu.ContextTrigger>
+          <Link href={`/create/${id}`} className={styles.card} role="listitem">
+            <p className={styles.title}>{name}</p>
+            <footer className={styles.footer}>
+              <div className="flex gap-2">
+                <Badge colorPalette={'blue'} rounded={'sm'}>
+                  {countMembers}/{maxMember} мест
+                </Badge>
+                <Badge colorPalette={'green'} rounded={'sm'}>
+                  {countQuestions} вопросов
+                </Badge>
+              </div>
+              <button className={styles.start}>
+                <FaPlay size={20} />
+              </button>
+            </footer>
+          </Link>
+        </Menu.ContextTrigger>
+        <Portal>
+          <Menu.Positioner>
+            <Menu.Content>
+              <Menu.Item
+                onClick={() => push(`/quizzes/${id}?start=1`)}
+                value="play">
+                <Play size={18} /> Начать
+              </Menu.Item>
+              <Menu.Item onClick={() => push(`/create/${id}`)} value="edit">
+                <Pencil size={18} /> Редактрировать
+              </Menu.Item>
+              <Menu.Item
+                onClick={() => {
+                  setParam({ name: 'delete-quiz', param: String(id) });
+                  openModal('delete-quiz');
+                }}
+                color="fg.error"
+                _hover={{ bg: 'bg.error', color: 'fg.error' }}
+                value="delete">
+                <Trash size={18} /> Удалить
+              </Menu.Item>
+            </Menu.Content>
+          </Menu.Positioner>
+        </Portal>
+      </Menu.Root>
+    );
+  }
+
   return (
     <div className={styles.card} role="listitem">
-      {/* <header className={styles.header}>
-        <Avatar.Root css={ringCss} colorPalette={'black'}>
-          <Avatar.Fallback name="Segun Adebayo" />
-          <Avatar.Image src={avatar_img.src} />
-        </Avatar.Root>
-        <div>
-          <h5 className={styles.name}>Fake</h5>
-          <p className={styles.nickname}>@nickname</p>
-        </div>
-      </header> */}
       <p className={styles.title}>{name}</p>
       <footer className={styles.footer}>
         <div className="flex gap-2">
@@ -48,13 +93,7 @@ const QuizCard: FC<QuizCardProps> = ({
             {countQuestions} вопросов
           </Badge>
         </div>
-        {endedAt == 0 ? (
-          <button className={styles.start}>
-            <FaPlay size={16} />
-          </button>
-        ) : (
-          <p className={styles.status}>Закончена (12.12.2020)</p>
-        )}
+        <p className={styles.status}>Закончена (12.12.2020)</p>
       </footer>
     </div>
   );

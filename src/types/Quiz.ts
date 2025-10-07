@@ -8,6 +8,7 @@ export interface IQuiz {
   questions: IQuestion[];
   members: IMember[];
   endedAt: number;
+  userId: number;
 }
 
 export interface IQuizCreate {

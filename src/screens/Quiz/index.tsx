@@ -9,7 +9,6 @@ import { useParams } from 'next/navigation';
 socket.connect();
 
 const QuizScreen: NextPage = () => {
-  const quizId = useParams<{ id: string }>().id;
   return <Start />;
 };
 

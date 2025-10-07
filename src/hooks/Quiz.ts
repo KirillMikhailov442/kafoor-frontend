@@ -53,3 +53,15 @@ export const useGetQuizWithoutEnabled = (
     onError,
   });
 };
+
+export const useDeleteQuiz = (
+  onSuccess?: (data: { data: string }) => void,
+  onError?: (error: AxiosError<{ message: string }>) => void,
+) => {
+  return useMutation({
+    mutationKey: ['quiz-delete'],
+    mutationFn: (id: number) => QuizService.deleteById(id),
+    onSuccess,
+    onError,
+  });
+};

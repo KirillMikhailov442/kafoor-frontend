@@ -10,7 +10,7 @@ import { useProfileWithoutEnabled } from '@/hooks/User';
 import { useEffect, useRef, useState } from 'react';
 import { socket, SOCKET_ACTION } from '@/api/socket';
 import Loading from '../Loading';
-import { ILeaveFromQuiz, ITellMyYourself } from '@/types/Socket';
+import { ITellMyYourself } from '@/types/Socket';
 import { IUser } from '@/types/User';
 import { useGetQuizWithoutEnabled } from '@/hooks/Quiz';
 import { toaster } from '@/components/ui/toaster';
@@ -32,11 +32,11 @@ const Start: NextPage = () => {
     () => {},
     () => {
       toaster.warning({
-        title: 'не удалось подключится к викторине',
+        title: 'Не удалось подключится к викторине',
       });
       setTimeout(() => {
         push('/');
-      }, 1000);
+      }, 500);
     },
   );
   const profile = useProfileWithoutEnabled(data => {
@@ -133,14 +133,16 @@ const Start: NextPage = () => {
             </div>
           </div>
           <footer className={styles.footer}>
-            <Button
-              className={styles.join}
-              size={'lg'}
-              colorPalette={'yellow'}
-              rounded={'full'}
-              variant={'solid'}>
-              Начать викторину
-            </Button>
+            {quiz.data?.data.userId == me.current?.id && (
+              <Button
+                className={styles.join}
+                size={'lg'}
+                colorPalette={'yellow'}
+                rounded={'full'}
+                variant={'solid'}>
+                Начать викторину
+              </Button>
+            )}
             <Button
               onClick={() => {
                 socket.emit(SOCKET_ACTION.LEAVE_FROM_QUIZ, {
