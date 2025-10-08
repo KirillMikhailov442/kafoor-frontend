@@ -6,14 +6,19 @@ import { v4 as uuidv4 } from 'uuid';
 
 interface QuizStore {
   index: number;
+  lastChanged: string;
+  name: string;
+  maxMembers: number;
   setIndex: (newIndex: number) => void;
   store: IQuestion[];
-  //   editQuiz: (data: Omit<IQuiz, 'questions'>) => void;
+  editQuiz: (data: Pick<IQuiz, 'name' | 'maxMembers'>) => void;
+  editQuizName: (name: string) => void;
+  editQuizMaxMembers: (number: number) => void;
   addQuestion: () => void;
   removeQuestion: (index: number) => void;
   editQuestionText: (questionIndex: number, text: string) => void;
-  editQuestionLimit: (questionIndex: number, limit: number) => void;
-  editQuestionPoints: (questionIndex: number, points: number) => void;
+  editQuestionTimeLimit: (questionIndex: number, timeLimit: number) => void;
+  editQuestionScores: (questionIndex: number, scores: number) => void;
   editQuestion: (
     questionIndex: number,
     data: Omit<IQuestion, 'options'>,
@@ -25,51 +30,84 @@ interface QuizStore {
 
 export const useQuiz = create<QuizStore>(set => ({
   index: 0,
+  lastChanged: '',
+  name: '',
+  maxMembers: 2,
   setIndex: (newIndex: number) =>
     set(state => ({
       ...state,
       index: newIndex,
     })),
   store: [],
-  addQuestion: () =>
+  editQuiz: data =>
     set(state => ({
-      store: [
-        ...state.store,
-        { text: '', limit: 10, points: 10, id: uuidv4() },
-      ],
+      ...state,
+      name: data.name,
+      maxMembers: data.maxMembers,
     })),
+  editQuizName: name =>
+    set(state => ({
+      ...state,
+      name,
+    })),
+  editQuizMaxMembers: number =>
+    set(state => ({
+      ...state,
+      maxMembers: number,
+    })),
+  addQuestion: () =>
+    set(state => {
+      const id = uuidv4();
+      return {
+        lastChanged: `question-${id}`,
+        store: [...state.store, { text: '', timeLimit: 10, scores: 10, id }],
+      };
+    }),
   removeQuestion: (index: number) => {
     set(state => ({
       index: state.index == 0 ? 0 : --state.index,
+      lastChanged: `question-${state.store.find((_, i) => i == index)?.id}`,
       store: [...state.store.filter((_, i) => i != index)],
     }));
   },
   editQuestionText: (questionIndex, text) =>
     set(state => ({
+      lastChanged: `question-${
+        state.store.find((_, i) => i == questionIndex)?.id
+      }`,
       store: [
         ...state.store.map((item, i) =>
           questionIndex == i ? { ...item, text } : item,
         ),
       ],
     })),
-  editQuestionLimit: (questionIndex, limit) =>
+  editQuestionTimeLimit: (questionIndex, timeLimit) =>
     set(state => ({
+      lastChanged: `question-${
+        state.store.find((_, i) => i == questionIndex)?.id
+      }`,
       store: [
         ...state.store.map((item, i) =>
-          questionIndex == i ? { ...item, limit } : item,
+          questionIndex == i ? { ...item, timeLimit } : item,
         ),
       ],
     })),
-  editQuestionPoints: (questionIndex, points) =>
+  editQuestionScores: (questionIndex, scores) =>
     set(state => ({
+      lastChanged: `question-${
+        state.store.find((_, i) => i == questionIndex)?.id
+      }`,
       store: [
         ...state.store.map((item, i) =>
-          questionIndex == i ? { ...item, points } : item,
+          questionIndex == i ? { ...item, scores } : item,
         ),
       ],
     })),
   editQuestion: (questionIndex, data) =>
     set(state => ({
+      lastChanged: `question-${
+        state.store.find((_, i) => i == questionIndex)?.id
+      }`,
       store: [
         ...state.store.map((item, i) => (questionIndex == i ? data : item)),
       ],
@@ -77,15 +115,17 @@ export const useQuiz = create<QuizStore>(set => ({
   addOption: questionIndex =>
     set(state => {
       const question = state.store[questionIndex];
+      const id = uuidv4();
       if (!question) return state;
 
       const newOptions = question.options
-        ? [...question.options, { text: '', isCorrect: false, id: uuidv4() }]
-        : [{ text: '', isCorrect: false, id: uuidv4() }];
+        ? [...question.options, { text: '', isCorrect: false, id }]
+        : [{ text: '', isCorrect: false, id }];
 
       const updatedQuestion = { ...question, options: newOptions };
 
       return {
+        lastChanged: `option-${id}`,
         store: state.store.map((item, i) =>
           i === questionIndex ? updatedQuestion : item,
         ),
@@ -94,16 +134,13 @@ export const useQuiz = create<QuizStore>(set => ({
   removeOption: (questionIndex, index) =>
     set(state => {
       const question = state.store[questionIndex];
-
       if (!question) return state;
       const newOptions = question.options?.filter((_, i) => index != i);
-      console.log(
-        state.store.map((item, i) =>
-          i === questionIndex ? { ...item, options: newOptions } : item,
-        ),
-      );
 
       return {
+        lastChanged: `option-${
+          question.options?.find((_, i) => index == i)?.id
+        }`,
         store: state.store.map((item, i) =>
           i === questionIndex ? { ...item, options: newOptions } : item,
         ),
@@ -118,6 +155,9 @@ export const useQuiz = create<QuizStore>(set => ({
         i == index ? { ...item, ...data } : item,
       );
       return {
+        lastChanged: `option-${
+          question.options?.find((_, i) => index == i)?.id
+        }`,
         store: state.store.map((item, i) =>
           i === questionIndex ? { ...item, options: newOptions } : item,
         ),

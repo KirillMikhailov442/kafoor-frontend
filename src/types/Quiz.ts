@@ -2,16 +2,25 @@ import { IMember } from './Member';
 import { IQuestion } from './Question';
 
 export interface IQuiz {
-  id: number;
+  id: string;
   name: string;
-  maxMember: number;
+  maxMembers: number;
   questions: IQuestion[];
   members: IMember[];
   endedAt: number;
+  startedAt: number;
+  createdAt: number;
+  updatedAt: number;
   userId: number;
 }
 
 export interface IQuizCreate {
   name: string;
-  maxMember: number;
+  maxMembers: number;
+}
+
+export interface IQuizUpdate {
+  id: string;
+  name: string;
+  maxMembers: number;
 }

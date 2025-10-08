@@ -7,19 +7,8 @@
   border-bottom: 1px solid var(--secondary-200);
 }
 
-.logo {
-  background-color: var(--primary-500);
-  color: white;
+.status {
   width: 40px;
-  aspect-ratio: 1;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  & * {
-    font-weight: 900;
-  }
 }
 
 .name {
@@ -34,4 +23,12 @@
   display: flex;
   align-items: flex-start;
   gap: 1rem;
+}
+
+.lastUpdated {
+  position: absolute;
+  bottom: -12px;
+  left: 5px;
+  font-size: 0.7em;
+  color: var(--secondary-300);
 }

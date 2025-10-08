@@ -44,16 +44,15 @@ const DeleteQuizModal: FC = () => {
               <p>После удаления восстановление будет невозможна</p>
               <footer className="!mt-8 flex justify-between gap-4">
                 <Button
-                  loading={isLoading}
+                  onClick={() => closeModal('delete-quiz')}
+                  disabled={isLoading}
                   variant={'outline'}
                   colorPalette={'blue'}
                   className="flex-grow">
                   Отмена
                 </Button>
                 <Button
-                  onClick={() => {
-                    mutate(Number(params['delete-quiz']));
-                  }}
+                  onClick={() => mutate(Number(params['delete-quiz']))}
                   loading={isLoading}
                   colorPalette={'blue'}
                   className="flex-grow">

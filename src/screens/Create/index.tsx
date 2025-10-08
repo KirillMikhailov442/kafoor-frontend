@@ -11,21 +11,23 @@ import { useParams } from 'next/navigation';
 import LoadingScreen from '../Loading';
 import { useEffect } from 'react';
 import { useQuiz } from '@/store/quiz';
-import { useDebounce } from 'use-debounce';
 
 const CreateScreen: NextPage = () => {
   const quizId = useParams<{ id: string }>().id;
-  const quiz = useGetQuizWithoutEnabled(Number(quizId));
-  const { store } = useQuiz();
-  const [updatedQuiz] = useDebounce(store, 2000);
+  const quiz = useGetQuizWithoutEnabled(quizId, ({ data }) => {
+    editQuiz({ name: data.name, maxMembers: data.maxMembers });
+  });
+  const { editQuiz } = useQuiz();
+
+  useEffect(() => {
+    window.addEventListener('beforeunload', e => {
+      e.preventDefault();
+    });
+  }, []);
 
   useEffect(() => {
     quiz.refetch();
   }, []);
-
-  useEffect(() => {
-    console.log(updatedQuiz);
-  }, [updatedQuiz]);
 
   if (quiz.isLoading) return <LoadingScreen />;
   return (

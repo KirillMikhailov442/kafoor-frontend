@@ -1,4 +1,4 @@
-import { IQuiz, IQuizCreate } from '@/types/Quiz';
+import { IQuiz, IQuizCreate, IQuizUpdate } from '@/types/Quiz';
 import { quizService } from '../configs';
 
 class QuizService {
@@ -12,12 +12,16 @@ class QuizService {
     return quizService.post<IQuiz>(this.baseUrl, body);
   }
 
-  public findById(id: number) {
-    return quizService.get(`${this.baseUrl}/${id}`);
+  public findById(id: string) {
+    return quizService.get<IQuiz>(`${this.baseUrl}/${id}`);
   }
 
-  public deleteById(id: number) {
-    return quizService.delete(`${this.baseUrl}/${id}`);
+  public update(body: IQuizUpdate) {
+    return quizService.put<IQuiz>(this.baseUrl, body);
+  }
+
+  public deleteById(id: string) {
+    return quizService.delete<string>(`${this.baseUrl}/${id}`);
   }
 }
 

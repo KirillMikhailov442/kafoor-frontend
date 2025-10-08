@@ -32,7 +32,7 @@ authService.interceptors.response.use(
   async error => {
     const originalRequest = error.config;
 
-    // if(originalRequest.url == '/refresh-token') throw error
+    if (originalRequest.url == '/api/v1/users/update-tokens') throw error;
     if (!originalRequest) throw error;
 
     if (error.response.status == 401 && !originalRequest._retry) {

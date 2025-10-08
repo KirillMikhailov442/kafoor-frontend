@@ -1,4 +1,4 @@
 export interface IMember {
-  id: number;
+  id: string;
   userId: number;
 }

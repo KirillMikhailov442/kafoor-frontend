@@ -27,7 +27,7 @@ const NoResult: NextPage = () => {
         <Button
           loading={createQuiz.isLoading}
           onClick={() =>
-            createQuiz.mutate({ name: 'Новая викторина', maxMember: 5 })
+            createQuiz.mutate({ name: 'Новая викторина', maxMembers: 5 })
           }
           rounded={'full'}
           colorPalette={'blue'}

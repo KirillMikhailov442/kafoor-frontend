@@ -1,7 +1,6 @@
 import { FC } from 'react';
 import styles from './QuizCard.module.scss';
-import { Avatar, Badge, defineStyle, Menu, Portal } from '@chakra-ui/react';
-import avatar_img from '@images/kafoor-user.webp';
+import { Badge, Menu, Portal } from '@chakra-ui/react';
 import { FaPlay } from 'react-icons/fa';
 import { IQuiz } from '@/types/Quiz';
 import Link from 'next/link';
@@ -9,15 +8,8 @@ import { Pencil, Play, Trash } from 'lucide-react';
 import { useModals } from '@/store/modals';
 import { useRouter } from 'next/navigation';
 
-const ringCss = defineStyle({
-  outlineWidth: '2px',
-  outlineColor: 'colorPalette.500',
-  outlineOffset: '2px',
-  outlineStyle: 'solid',
-});
-
 interface QuizCardProps
-  extends Pick<IQuiz, 'id' | 'maxMember' | 'name' | 'endedAt'> {
+  extends Pick<IQuiz, 'id' | 'maxMembers' | 'name' | 'endedAt'> {
   countMembers: number;
   countQuestions: number;
 }
@@ -25,7 +17,7 @@ interface QuizCardProps
 const QuizCard: FC<QuizCardProps> = ({
   id,
   name,
-  maxMember,
+  maxMembers,
   countMembers,
   countQuestions,
   endedAt,
@@ -41,7 +33,7 @@ const QuizCard: FC<QuizCardProps> = ({
             <footer className={styles.footer}>
               <div className="flex gap-2">
                 <Badge colorPalette={'blue'} rounded={'sm'}>
-                  {countMembers}/{maxMember} мест
+                  {countMembers}/{maxMembers} мест
                 </Badge>
                 <Badge colorPalette={'green'} rounded={'sm'}>
                   {countQuestions} вопросов
@@ -87,7 +79,7 @@ const QuizCard: FC<QuizCardProps> = ({
       <footer className={styles.footer}>
         <div className="flex gap-2">
           <Badge colorPalette={'blue'} rounded={'sm'}>
-            {countMembers}/{maxMember} мест
+            {countMembers}/{maxMembers} мест
           </Badge>
           <Badge colorPalette={'green'} rounded={'sm'}>
             {countQuestions} вопросов
