@@ -16,8 +16,10 @@ const CreateScreen: NextPage = () => {
   const quizId = useParams<{ id: string }>().id;
   const quiz = useGetQuizWithoutEnabled(quizId, ({ data }) => {
     editQuiz({ name: data.name, maxMembers: data.maxMembers });
+    setStore(data.questions);
+    
   });
-  const { editQuiz } = useQuiz();
+  const { editQuiz, setStore } = useQuiz();
 
   useEffect(() => {
     window.addEventListener('beforeunload', e => {

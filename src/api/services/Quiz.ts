@@ -12,7 +12,7 @@ class QuizService {
     return quizService.post<IQuiz>(this.baseUrl, body);
   }
 
-  public findById(id: string) {
+  public findById(id: number) {
     return quizService.get<IQuiz>(`${this.baseUrl}/${id}`);
   }
 

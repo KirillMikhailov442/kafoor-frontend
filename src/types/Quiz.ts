@@ -2,7 +2,7 @@ import { IMember } from './Member';
 import { IQuestion } from './Question';
 
 export interface IQuiz {
-  id: string;
+  id: number;
   name: string;
   maxMembers: number;
   questions: IQuestion[];
@@ -20,7 +20,7 @@ export interface IQuizCreate {
 }
 
 export interface IQuizUpdate {
-  id: string;
+  id: number;
   name: string;
   maxMembers: number;
 }

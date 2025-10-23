@@ -11,6 +11,7 @@ interface QuizStore {
   maxMembers: number;
   setIndex: (newIndex: number) => void;
   store: IQuestion[];
+  setStore: (store: IQuestion[]) => void;
   editQuiz: (data: Pick<IQuiz, 'name' | 'maxMembers'>) => void;
   editQuizName: (name: string) => void;
   editQuizMaxMembers: (number: number) => void;
@@ -39,6 +40,7 @@ export const useQuiz = create<QuizStore>(set => ({
       index: newIndex,
     })),
   store: [],
+  setStore: data => set(state => ({...state, store: data})),
   editQuiz: data =>
     set(state => ({
       ...state,
@@ -57,23 +59,23 @@ export const useQuiz = create<QuizStore>(set => ({
     })),
   addQuestion: () =>
     set(state => {
-      const id = uuidv4();
+      const slug = uuidv4();
       return {
-        lastChanged: `question-${id}`,
-        store: [...state.store, { text: '', timeLimit: 10, scores: 10, id }],
+        lastChanged: `question@${slug}`,
+        store: [...state.store, { text: '', timeLimit: 10, scores: 10, slug }],
       };
     }),
   removeQuestion: (index: number) => {
     set(state => ({
       index: state.index == 0 ? 0 : --state.index,
-      lastChanged: `question-${state.store.find((_, i) => i == index)?.id}`,
+      lastChanged: `question@${state.store.find((_, i) => i == index)?.slug}`,
       store: [...state.store.filter((_, i) => i != index)],
     }));
   },
   editQuestionText: (questionIndex, text) =>
     set(state => ({
-      lastChanged: `question-${
-        state.store.find((_, i) => i == questionIndex)?.id
+      lastChanged: `question@${
+        state.store.find((_, i) => i == questionIndex)?.slug
       }`,
       store: [
         ...state.store.map((item, i) =>
@@ -83,8 +85,8 @@ export const useQuiz = create<QuizStore>(set => ({
     })),
   editQuestionTimeLimit: (questionIndex, timeLimit) =>
     set(state => ({
-      lastChanged: `question-${
-        state.store.find((_, i) => i == questionIndex)?.id
+      lastChanged: `question@${
+        state.store.find((_, i) => i == questionIndex)?.slug
       }`,
       store: [
         ...state.store.map((item, i) =>
@@ -94,8 +96,8 @@ export const useQuiz = create<QuizStore>(set => ({
     })),
   editQuestionScores: (questionIndex, scores) =>
     set(state => ({
-      lastChanged: `question-${
-        state.store.find((_, i) => i == questionIndex)?.id
+      lastChanged: `question@${
+        state.store.find((_, i) => i == questionIndex)?.slug
       }`,
       store: [
         ...state.store.map((item, i) =>
@@ -105,8 +107,8 @@ export const useQuiz = create<QuizStore>(set => ({
     })),
   editQuestion: (questionIndex, data) =>
     set(state => ({
-      lastChanged: `question-${
-        state.store.find((_, i) => i == questionIndex)?.id
+      lastChanged: `question@${
+        state.store.find((_, i) => i == questionIndex)?.slug
       }`,
       store: [
         ...state.store.map((item, i) => (questionIndex == i ? data : item)),
@@ -115,17 +117,17 @@ export const useQuiz = create<QuizStore>(set => ({
   addOption: questionIndex =>
     set(state => {
       const question = state.store[questionIndex];
-      const id = uuidv4();
+      const slug = uuidv4();
       if (!question) return state;
 
       const newOptions = question.options
-        ? [...question.options, { text: '', isCorrect: false, id }]
-        : [{ text: '', isCorrect: false, id }];
+        ? [...question.options, { text: '', isCorrect: false, slug }]
+        : [{ text: '', isCorrect: false, slug }];
 
       const updatedQuestion = { ...question, options: newOptions };
 
       return {
-        lastChanged: `option-${id}`,
+        lastChanged: `option@${slug}`,
         store: state.store.map((item, i) =>
           i === questionIndex ? updatedQuestion : item,
         ),
@@ -138,8 +140,8 @@ export const useQuiz = create<QuizStore>(set => ({
       const newOptions = question.options?.filter((_, i) => index != i);
 
       return {
-        lastChanged: `option-${
-          question.options?.find((_, i) => index == i)?.id
+        lastChanged: `option@${
+          question.options?.find((_, i) => index == i)?.slug
         }`,
         store: state.store.map((item, i) =>
           i === questionIndex ? { ...item, options: newOptions } : item,
@@ -155,8 +157,8 @@ export const useQuiz = create<QuizStore>(set => ({
         i == index ? { ...item, ...data } : item,
       );
       return {
-        lastChanged: `option-${
-          question.options?.find((_, i) => index == i)?.id
+        lastChanged: `option@${
+          question.options?.find((_, i) => index == i)?.slug
         }`,
         store: state.store.map((item, i) =>
           i === questionIndex ? { ...item, options: newOptions } : item,

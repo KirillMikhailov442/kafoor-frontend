@@ -8,5 +8,7 @@
     "tabWidth": 2,
     "arrowParens": "avoid",
     "endOfLine": "lf",
-    "bracketSameLine": true
+    "bracketSameLine": true,
+    "plugins": ["prettier-plugin-organize-imports"],
+    "organizeImports": true
   }

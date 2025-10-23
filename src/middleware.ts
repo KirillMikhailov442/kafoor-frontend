@@ -13,5 +13,5 @@ export const middleware = (req: NextRequest) => {
   return NextResponse.next();
 };
 export const config = {
-  matcher: ['/', '/profile', '/create', '/quizzes/:id'],
+  matcher: ['/', '/profile', '/create/:id', '/quizzes/:id'],
 };

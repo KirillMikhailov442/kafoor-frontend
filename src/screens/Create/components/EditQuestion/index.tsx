@@ -15,7 +15,7 @@ const EditQuestion: FC = () => {
   if (store.length <= 0) return <div className={styles.wrapper}></div>;
 
   return (
-    <div key={store[index].id} className={styles.wrapper}>
+    <div key={store[index].slug} className={styles.wrapper}>
       <div className={styles.container}>
         <div className={styles.top}>
           <Editable.Root
@@ -34,15 +34,15 @@ const EditQuestion: FC = () => {
             />
             <Editable.Textarea resize={'none'} rows={3} />
           </Editable.Root>
-          <div className={styles.file}>
+          {/* <div className={styles.file}>
             <Image loading="lazy" alt="img" src={img} />
-          </div>
+          </div> */}
         </div>
         <div className={styles.bottom}>
           {store.length > 0 &&
             store[index]?.options?.map((option, i) => (
               <Option
-                key={option.id}
+                key={option.slug}
                 number={i + 1}
                 isCorrect={option.isCorrect}
                 text={option.text}

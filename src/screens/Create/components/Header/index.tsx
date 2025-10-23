@@ -10,12 +10,13 @@ import {
   Spinner,
 } from '@chakra-ui/react';
 import { useParams, useRouter } from 'next/navigation';
-import Link from 'next/link';
 import { CheckCircle2, CircleAlert, Users } from 'lucide-react';
 import { useQuiz } from '@/store/quiz';
 import { useDebounce } from 'use-debounce';
 import { useUpdateQuiz } from '@/hooks/Quiz';
 import { parseDate } from '@/helpers/date';
+import questionService from '@api/services/Question'
+import optionService from '@api/services/Option'
 
 const Header: FC = () => {
   const { push } = useRouter();
@@ -31,12 +32,13 @@ const Header: FC = () => {
   const updateQuiz = useUpdateQuiz();
   const [updatedName] = useDebounce(name, 2000);
   const [updatedMaxMembers] = useDebounce(maxMembers, 2000);
-  const [updatedStore] = useDebounce(store, 2000);
+  const [updatedId, setUpdatedId] = useState<Set<string>>(new Set([]));
+  const [updatedIdD] = useDebounce(updatedId, 2000);
 
   useEffect(() => {
     if (name) {
       updateQuiz.mutate({
-        id: quizId,
+        id: Number(quizId),
         name,
         maxMembers,
       });
@@ -44,8 +46,37 @@ const Header: FC = () => {
   }, [updatedName, updatedMaxMembers]);
 
   useEffect(() => {
-    console.log(lastChanged);
-  }, [updatedStore]);
+    setUpdatedId(prev => new Set([...prev, lastChanged]));
+  }, [store]);
+
+  useEffect(() => {
+    updatedIdD.forEach((item) => {
+      const [type, slug] = item.split('@');
+      
+      if(type == 'question'){
+        const question = store.find(el => el.slug == slug);
+        if(question) return questionService.edit({...question, slug: item, quizId: Number(quizId)})
+          questionService.remove(item)
+
+      }
+      else{
+               const question = store.find(el1 => el1.options?.some(el2 => el2.slug == slug));
+               if(!question) return;
+               const option = question.options?.find(el1 => el1.slug == slug)
+
+               if(option) return optionService.edit({...option, questionSlug: question.slug, slug: item})
+      }
+        // const option = store.find(el1 => el1.options?.some(el2 => el2.slug == slug));
+        // if(option) return optionService.edit({...option, slug: item, questionId: })
+      //   if(!question?.options) return;      
+      //   const option = question?.options.find(el1 => el1.id == id);
+
+      //   if(!option) return optionService.remove(id)
+      //     optionService.edit({...option, questionId: question.id})
+      // }
+    })
+    updatedId.clear();
+  }, [updatedIdD]);
 
   return (
     <header className={styles.header}>
@@ -122,7 +153,7 @@ const Header: FC = () => {
           loading={updateQuiz.isLoading}
           onClick={() => {
             updateQuiz.mutate({
-              id: quizId,
+              id: Number(quizId),
               name,
               maxMembers,
             });
