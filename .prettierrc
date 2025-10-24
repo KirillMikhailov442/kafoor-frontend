@@ -9,6 +9,5 @@
     "arrowParens": "avoid",
     "endOfLine": "lf",
     "bracketSameLine": true,
-    "plugins": ["prettier-plugin-organize-imports"],
     "organizeImports": true
   }

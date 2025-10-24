@@ -10,9 +10,11 @@ import {
   Circle,
   defineStyle,
   Float,
+  IconButton,
   Menu,
   Portal,
   SkeletonCircle,
+  useMediaQuery,
 } from '@chakra-ui/react';
 import avatar_img from '@images/kafoor-user.webp';
 import { Plus } from 'lucide-react';
@@ -41,6 +43,7 @@ const Header: FC = () => {
 
   const { push, replace } = useRouter();
   const [scrolling, setScrolling] = useState(false);
+  const [isMobile] = useMediaQuery(['(max-width: 425px)']);
   useEffect(() => {
     window.addEventListener('scroll', () => {
       setScrolling(window.scrollY >= 50 ? true : false);
@@ -56,17 +59,31 @@ const Header: FC = () => {
           Kafoor
         </Link>
         <nav className={styles.nav}>
-          <Button
-            loading={createQuiz.isLoading}
-            onClick={() =>
-              createQuiz.mutate({ name: 'Новая викторина', maxMembers: 5 })
-            }
-            rounded={'full'}
-            colorPalette={'blue'}
-            variant={'solid'}>
-            <Plus />
-            Создать викторину
-          </Button>
+          {!isMobile ? (
+            <Button
+              loading={createQuiz.isLoading}
+              onClick={() =>
+                createQuiz.mutate({ name: 'Новая викторина', maxMembers: 5 })
+              }
+              rounded={'full'}
+              colorPalette={'blue'}
+              variant={'solid'}>
+              <Plus />
+              Создать викторину
+            </Button>
+          ) : (
+            <IconButton
+              size={'lg'}
+              colorPalette={'blue'}
+              variant={'solid'}
+              loading={createQuiz.isLoading}
+              onClick={() =>
+                createQuiz.mutate({ name: 'Новая викторина', maxMembers: 5 })
+              }
+              rounded={'full'}>
+              <Plus strokeWidth={3} />
+            </IconButton>
+          )}
           {profile.data?.data?.id ? (
             <Menu.Root>
               <Menu.Trigger asChild>

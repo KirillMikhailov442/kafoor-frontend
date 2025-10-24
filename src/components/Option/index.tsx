@@ -8,21 +8,21 @@ import { useQuiz } from '@/store/quiz';
 interface OptionProps {
   number: number;
   text: string;
-  isCorrect: boolean;
+  correct: boolean;
   onDelete?: () => void;
 }
 
 const BG_COLOR = ['#01ED5A', '#FF6263', '#FFBC02', '#63B3FF'];
 const LETTERS = ['A', 'B', 'C', 'D'];
 
-const Option: FC<OptionProps> = ({ text, number, isCorrect, onDelete }) => {
+const Option: FC<OptionProps> = ({ text, number, correct, onDelete }) => {
   const [value, setValue] = useState(text);
-  const [checked, setChecked] = useState<boolean>(isCorrect);
+  const [checked, setChecked] = useState<boolean>(correct);
   const { editOption, index } = useQuiz();
 
   useEffect(() => {
     // @ts-ignore
-    editOption(index, number - 1, { isCorrect: checked, text: value });
+    editOption(index, number - 1, { correct: checked, text: value });
   }, [value, checked]);
 
   return (

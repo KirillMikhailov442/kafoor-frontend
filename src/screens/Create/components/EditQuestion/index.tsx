@@ -44,7 +44,7 @@ const EditQuestion: FC = () => {
               <Option
                 key={option.slug}
                 number={i + 1}
-                isCorrect={option.isCorrect}
+                correct={option.correct}
                 text={option.text}
                 onDelete={() => removeOption(index, i)}
               />

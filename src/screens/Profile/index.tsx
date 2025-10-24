@@ -3,7 +3,7 @@
 import { NextPage } from 'next';
 import styles from './Profile.module.scss';
 import clsx from 'clsx';
-import { Alert, Avatar, Button, defineStyle, Link } from '@chakra-ui/react';
+import { Avatar, Button, defineStyle } from '@chakra-ui/react';
 import avatar_img from '@images/kafoor-user.webp';
 import EditProfileModal from '@/components/Modals/EditProfile';
 import { useModals } from '@/store/modals';
@@ -67,18 +67,6 @@ const ProfileScreen: NextPage = () => {
             Выйти
           </Button>
         </footer>
-        {!data?.data.confirmed && (
-          <Alert.Root className="!mt-6" status="warning">
-            <Alert.Indicator />
-            <Alert.Title>
-              Вы не подтвердили свой аккаунт. Подтвердите аккаунт, перейдя по
-              ссылке в письме
-            </Alert.Title>
-            <Link alignSelf="center" fontWeight="medium">
-              Отправить письмо
-            </Link>
-          </Alert.Root>
-        )}
       </div>
     </div>
   );

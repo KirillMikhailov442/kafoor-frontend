@@ -22,12 +22,6 @@ const CreateScreen: NextPage = () => {
   const { editQuiz, setStore } = useQuiz();
 
   useEffect(() => {
-    window.addEventListener('beforeunload', e => {
-      e.preventDefault();
-    });
-  }, []);
-
-  useEffect(() => {
     quiz.refetch();
   }, []);
 

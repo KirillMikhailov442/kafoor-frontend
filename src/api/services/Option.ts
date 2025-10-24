@@ -12,8 +12,8 @@ class OptionService {
     return quizService.post<IOption>(this.baseUrl, body);
   }
 
-  public remove(id: number) {
-    return quizService.delete(`${this.baseUrl}/${id}`);
+  public remove(slug: string) {
+    return quizService.delete(`${this.baseUrl}/slug/${slug}`);
   }
 
   public edit(body: IOptionUpdate) {

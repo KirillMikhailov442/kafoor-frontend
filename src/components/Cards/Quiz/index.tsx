@@ -33,7 +33,7 @@ const QuizCard: FC<QuizCardProps> = ({
             <footer className={styles.footer}>
               <div className="flex gap-2">
                 <Badge colorPalette={'blue'} rounded={'sm'}>
-                  {countMembers}/{maxMembers} мест
+                  {maxMembers} мест
                 </Badge>
                 <Badge colorPalette={'green'} rounded={'sm'}>
                   {countQuestions} вопросов

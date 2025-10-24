@@ -25,6 +25,7 @@ const Header: FC = () => {
     name,
     maxMembers,
     store,
+    index,
     lastChanged,
     editQuizName,
     editQuizMaxMembers,
@@ -49,6 +50,7 @@ const Header: FC = () => {
     setUpdatedId(prev => new Set([...prev, lastChanged]));
   }, [store]);
 
+
   useEffect(() => {
     updatedIdD.forEach((item) => {
       const [type, slug] = item.split('@');
@@ -57,23 +59,20 @@ const Header: FC = () => {
         const question = store.find(el => el.slug == slug);
         if(question) return questionService.edit({...question, slug: item, quizId: Number(quizId)})
           questionService.remove(item)
-
       }
-      else{
-               const question = store.find(el1 => el1.options?.some(el2 => el2.slug == slug));
-               if(!question) return;
-               const option = question.options?.find(el1 => el1.slug == slug)
 
-               if(option) return optionService.edit({...option, questionSlug: question.slug, slug: item})
+      if(type == 'option'){
+        console.log('store', store);
+        console.log('item', item);
+        
+        
+        const question = store.find(el1 => el1.options?.some(el2 => el2.slug == item));
+        const option = question?.options?.find(el1 => el1.slug == item)
+        console.log('options', question?.options);   
+        console.log('option', option);
+        if(option) return optionService.edit({...option, questionSlug: question.slug.includes('@') ? question.slug : `question@${question.slug}`, slug: item})
+        else optionService.remove(item)
       }
-        // const option = store.find(el1 => el1.options?.some(el2 => el2.slug == slug));
-        // if(option) return optionService.edit({...option, slug: item, questionId: })
-      //   if(!question?.options) return;      
-      //   const option = question?.options.find(el1 => el1.id == id);
-
-      //   if(!option) return optionService.remove(id)
-      //     optionService.edit({...option, questionId: question.id})
-      // }
     })
     updatedId.clear();
   }, [updatedIdD]);
