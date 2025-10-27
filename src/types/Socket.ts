@@ -1,6 +1,6 @@
 export interface ITellMyYourself {
   socketId: string;
-  userId: string;
+  userId: number;
   name: string;
 }
 

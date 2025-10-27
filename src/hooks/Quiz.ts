@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from 'react-query';
 import QuizService from '@api/services/Quiz';
 import { AxiosError } from 'axios';
-import { IQuiz, IQuizCreate, IQuizUpdate } from '@/types/Quiz';
+import { IQuiz, IQuizCreate, IQuizStart, IQuizUpdate } from '@/types/Quiz';
 
 export const useGetMyQuizzes = (
   onSuccess?: (data: { data: IQuiz[] }) => void,
@@ -28,7 +28,7 @@ export const useCreateQuiz = (
 };
 
 export const useGetQuiz = (
-  id: string,
+  id: number,
   onSuccess?: (data: { data: IQuiz }) => void,
   onError?: (error: AxiosError<{ message: string }>) => void,
 ) => {
@@ -53,7 +53,7 @@ export const useUpdateQuiz = (
 };
 
 export const useGetQuizWithoutEnabled = (
-  id: string,
+  id: number,
   onSuccess?: (data: { data: IQuiz }) => void,
   onError?: (error: AxiosError<{ message: string }>) => void,
 ) => {
@@ -72,7 +72,31 @@ export const useDeleteQuiz = (
 ) => {
   return useMutation({
     mutationKey: ['quiz-delete'],
-    mutationFn: (id: string) => QuizService.deleteById(id),
+    mutationFn: (id: number) => QuizService.deleteById(id),
+    onSuccess,
+    onError,
+  });
+};
+
+export const useStartQuiz = (
+  onSuccess?: (data: { data: string }) => void,
+  onError?: (error: AxiosError<{ message: string }>) => void,
+) => {
+  return useMutation({
+    mutationKey: ['quiz-start'],
+    mutationFn: (body: IQuizStart) => QuizService.start(body),
+    onSuccess,
+    onError,
+  });
+};
+
+export const useFinishQuiz = (
+  onSuccess?: (data: { data: string }) => void,
+  onError?: (error: AxiosError<{ message: string }>) => void,
+) => {
+  return useMutation({
+    mutationKey: ['quiz-finish'],
+    mutationFn: () => QuizService.finish(),
     onSuccess,
     onError,
   });

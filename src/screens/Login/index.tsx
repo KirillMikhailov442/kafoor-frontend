@@ -9,7 +9,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import Input from '@/components/UI/Input';
 import { useLogin } from '@/hooks/User';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
 import {
   COOKIE_TOKEN_LIFESPAN,

@@ -2,7 +2,7 @@
 
 import { NextPage } from 'next';
 import styles from './Register.module.scss';
-import { Button } from '@chakra-ui/react';
+import { Button, Tabs } from '@chakra-ui/react';
 import Link from 'next/link';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -19,6 +19,7 @@ import {
 } from '@/constants/cookies';
 
 const schema = z.object({
+  type: z.enum(['student', 'teacher']),
   name: z.string().nonempty('Введите имя'),
   nickname: z
     .string()
@@ -46,9 +47,14 @@ const RegisterScreen: NextPage = () => {
   const {
     register,
     handleSubmit,
+    watch,
+    setValue,
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(schema),
+    defaultValues: {
+      type: 'student',
+    },
   });
 
   useEffect(() => {
@@ -88,6 +94,25 @@ const RegisterScreen: NextPage = () => {
             Мы рады приветствовать нового участника!
           </p>
           <div className="flex flex-col gap-3">
+            <Tabs.Root
+              fitted
+              size={'sm'}
+              defaultValue={watch('type')}
+              variant={'enclosed'}>
+              <p className={'text-sm!'}>Тип аккаунта</p>
+              <Tabs.List w={'full'}>
+                <Tabs.Trigger
+                  onClick={() => setValue('type', 'student')}
+                  value="student">
+                  Ученик
+                </Tabs.Trigger>
+                <Tabs.Trigger
+                  onClick={() => setValue('type', 'teacher')}
+                  value="teacher">
+                  Учитель
+                </Tabs.Trigger>
+              </Tabs.List>
+            </Tabs.Root>
             <Input
               {...register('name')}
               error={errors.name?.message}

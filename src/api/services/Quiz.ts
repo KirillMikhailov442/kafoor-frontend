@@ -1,4 +1,4 @@
-import { IQuiz, IQuizCreate, IQuizUpdate } from '@/types/Quiz';
+import { IQuiz, IQuizCreate, IQuizStart, IQuizUpdate } from '@/types/Quiz';
 import { quizService } from '../configs';
 
 class QuizService {
@@ -20,8 +20,16 @@ class QuizService {
     return quizService.put<IQuiz>(this.baseUrl, body);
   }
 
-  public deleteById(id: string) {
+  public deleteById(id: number) {
     return quizService.delete<string>(`${this.baseUrl}/${id}`);
+  }
+
+  public start(body: IQuizStart) {
+    return quizService.post(`${this.baseUrl}/start`, body);
+  }
+
+  public finish() {
+    return quizService.post(`${this.baseUrl}/finish`);
   }
 }
 

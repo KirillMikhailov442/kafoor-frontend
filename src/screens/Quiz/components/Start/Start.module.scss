@@ -70,17 +70,23 @@
 
 .footer {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   position: relative;
 }
 
 .join,
-.exit {
+.exit,
+.copylink {
   font-weight: 600;
 }
 
-.exit {
+.join {
   position: absolute;
-  right: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.exit {
+  margin-left: auto;
 }

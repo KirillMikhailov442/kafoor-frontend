@@ -1,4 +1,5 @@
 export interface IOption {
+  id: number;
   slug: string;
   text: string;
   correct: boolean;

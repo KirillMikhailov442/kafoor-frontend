@@ -39,7 +39,12 @@ const QuizCard: FC<QuizCardProps> = ({
                   {countQuestions} вопросов
                 </Badge>
               </div>
-              <button className={styles.start}>
+              <button
+                onClick={e => {
+                  e.preventDefault();
+                  push(`/quizzes/${id}?start=1`);
+                }}
+                className={styles.start}>
                 <FaPlay size={20} />
               </button>
             </footer>

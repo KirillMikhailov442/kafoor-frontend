@@ -24,3 +24,8 @@ export interface IQuizUpdate {
   name: string;
   maxMembers: number;
 }
+
+export interface IQuizStart {
+  quizId: number;
+  users: number[];
+}

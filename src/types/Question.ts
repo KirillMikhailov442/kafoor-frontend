@@ -1,12 +1,13 @@
 import { IOption } from './Option';
 
 export interface IQuestion {
+  id: number;
   slug: string;
   text: string;
   scores: number;
   timeLimit: number;
   options?: IOption[];
-  quizId: number
+  quizId: number;
 }
 
 export interface IQuestionCreate {

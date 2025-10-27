@@ -18,7 +18,7 @@ export interface IUserTokens {
 }
 
 export interface IUser {
-  id: string;
+  id: number;
   name: string;
   nickname: string;
   email: string;
