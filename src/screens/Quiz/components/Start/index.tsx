@@ -15,6 +15,10 @@ import { IUser } from '@/types/User';
 import { useGetQuizWithoutEnabled, useStartQuiz } from '@/hooks/Quiz';
 import { toaster } from '@/components/ui/toaster';
 import avatar_img from '@images/kafoor-user.webp';
+import { useHoldingQuiz } from '@/store/holdingQuiz';
+import { IQuestion } from '@/types/Question';
+import { useTimer } from 'use-timer';
+import { IQuiz } from '@/types/Quiz';
 
 const ringCss = defineStyle({
   outlineWidth: '2px',
@@ -26,16 +30,39 @@ const ringCss = defineStyle({
 const Start: NextPage = () => {
   const quizId = Number(useParams<{ id: string }>().id);
   const { push } = useRouter();
+  const { start, setQuestion, setStep, step } = useHoldingQuiz();
   const me = useRef<IUser>(null);
   const [members, setMembers] = useState<ITellMyYourself[]>([]);
   const clipboard = useClipboard({ value: window.location.href });
   const quiz = useGetQuizWithoutEnabled(
     quizId,
-    () => {},
+    () => {
+      timer.reset();
+    },
     () => {
       push('/');
     },
   );
+
+  const timer = useTimer({
+    initialTime: quiz.data?.data.questions[step - 1]?.timeLimit,
+    endTime: 0,
+    interval: 1000,
+    timerType: 'DECREMENTAL',
+    onTimeUpdate: time => {
+      console.log('time: ', time);
+    },
+    onTimeOver: () => {
+      console.log(quiz.data?.data.questions[step - 1].options);
+
+      // setStep(step + 1);
+      // socket.send(SOCKET_ACTION.NEXT_QUESTION, {
+      //   quizId,
+      //   question: quiz.data?.data.questions[step],
+      // });
+    },
+  });
+
   const profile = useProfileWithoutEnabled(data => {
     me.current = { ...data.data, quizId };
     socket.emit(SOCKET_ACTION.JOIN_TO_QUIZ, {
@@ -45,7 +72,18 @@ const Start: NextPage = () => {
       nickname: data.data.nickname,
     });
   });
-  const startQuiz = useStartQuiz(() => {});
+  const startQuiz = useStartQuiz(
+    data => {
+      localStorage.setItem('quiz', JSON.stringify(data.data));
+      setStep(1);
+      // timer.reset();
+    },
+    () => {
+      toaster.warning({
+        title: 'Что-то пошло не так',
+      });
+    },
+  );
 
   useEffect(() => {
     socket.on(SOCKET_ACTION.JOIN_TO_QUIZ, (data: ITellMyYourself) => {
@@ -67,6 +105,17 @@ const Start: NextPage = () => {
 
     socket.on(SOCKET_ACTION.LEAVE_FROM_QUIZ, (socketId: string) => {
       setMembers(prev => prev.filter(member => member.socketId != socketId));
+    });
+
+    socket.on(SOCKET_ACTION.START_QUIZ, (question: IQuestion) => {
+      if (
+        (JSON.parse(localStorage.getItem('quiz') || '') as IQuiz).userId ==
+        me.current?.id
+      )
+        return;
+      setQuestion(question);
+
+      start();
     });
 
     socket.on('disconnect', () => {
@@ -107,7 +156,8 @@ const Start: NextPage = () => {
         <div className={clsx('k-container', styles.headerContainer)}>
           <h5 className={styles.name}>{quiz.data?.data.name}</h5>
           <p className={styles.step}>
-            <Users size={20} /> {members.length}/{quiz.data?.data.maxMembers}
+            <Users size={20} /> {members.length - 1}/
+            {quiz.data?.data.maxMembers}
           </p>
         </div>
       </header>
@@ -115,20 +165,23 @@ const Start: NextPage = () => {
         <div className={styles.content}>
           <div className={styles.members}>
             <div className={styles.membersContainer}>
-              {members.map(member => (
-                <div
-                  key={member.socketId}
-                  className="flex flex-col items-center">
-                  <Avatar.Root
-                    size={'2xl'}
-                    css={ringCss}
-                    colorPalette={'whiteAlpha'}>
-                    <Avatar.Fallback name={member.name} />
-                    <Avatar.Image src={avatar_img.src} />
-                  </Avatar.Root>
-                  <p>{member.name}</p>
-                </div>
-              ))}
+              {members.map(
+                member =>
+                  member.userId != quiz.data?.data.userId && (
+                    <div
+                      key={member.socketId}
+                      className="flex flex-col items-center">
+                      <Avatar.Root
+                        size={'2xl'}
+                        css={ringCss}
+                        colorPalette={'whiteAlpha'}>
+                        <Avatar.Fallback name={member.name} />
+                        <Avatar.Image src={avatar_img.src} />
+                      </Avatar.Root>
+                      <p>{member.name}</p>
+                    </div>
+                  ),
+              )}
             </div>
           </div>
           <footer className={styles.footer}>

@@ -4,7 +4,6 @@ import '@styles/globals.scss';
 import { SITE_NAME } from '@/constants/seo';
 import Providers from '@/components/Layouts/Providers';
 import { Toaster } from '@/components/ui/toaster';
-import Modals from '@/components/Modals';
 const golosText = Golos_Text({
   subsets: ['latin'],
 });
@@ -23,7 +22,6 @@ export default function RootLayout({
     <html suppressHydrationWarning lang="ru">
       <Providers>
         <Toaster />
-        <Modals />
         <body className={`${golosText.className} antialiased`}>{children}</body>
       </Providers>
     </html>

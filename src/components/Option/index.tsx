@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react';
+import { ChangeEvent, FC, useEffect, useState } from 'react';
 import styles from './Option.module.scss';
 import clsx from 'clsx';
 import { Checkbox, Editable } from '@chakra-ui/react';
@@ -9,13 +9,24 @@ interface OptionProps {
   number: number;
   text: string;
   correct: boolean;
+  readOnly?: boolean;
+  name: string;
   onDelete?: () => void;
+  onCheck?: (value: boolean) => void;
 }
 
 const BG_COLOR = ['#01ED5A', '#FF6263', '#FFBC02', '#63B3FF'];
 const LETTERS = ['A', 'B', 'C', 'D'];
 
-const Option: FC<OptionProps> = ({ text, number, correct, onDelete }) => {
+const Option: FC<OptionProps> = ({
+  text,
+  number,
+  correct,
+  readOnly = false,
+  name,
+  onCheck,
+  onDelete,
+}) => {
   const [value, setValue] = useState(text);
   const [checked, setChecked] = useState<boolean>(correct);
   const { editOption, index } = useQuiz();
@@ -35,6 +46,7 @@ const Option: FC<OptionProps> = ({ text, number, correct, onDelete }) => {
         {LETTERS[number - 1]}
       </div>
       <Editable.Root
+        readOnly={readOnly}
         maxLength={50}
         maxLines={1}
         className={styles.text}
@@ -54,7 +66,13 @@ const Option: FC<OptionProps> = ({ text, number, correct, onDelete }) => {
         colorPalette={'green'}
         checked={checked}
         size={'lg'}>
-        <Checkbox.HiddenInput onChange={e => setChecked(e.target.checked)} />
+        <Checkbox.HiddenInput
+          name={name}
+          onChange={e => {
+            setChecked(e.target.checked);
+            if (onCheck) onCheck(e.target.checked);
+          }}
+        />
         <Checkbox.Control rounded={'full'}>
           <Checkbox.Indicator />
         </Checkbox.Control>

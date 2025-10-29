@@ -19,14 +19,14 @@ import {
 } from '@/constants/cookies';
 
 const schema = z.object({
-  type: z.enum(['student', 'teacher']),
+  role: z.enum(['STUDENT', 'TEACHER']),
   name: z.string().nonempty('Введите имя'),
   nickname: z
     .string()
     .nonempty('Введите никнейм')
-    .regex(/^[a-zA-Z0-9_]{3,16}$/, {
+    .regex(/^[a-zA-Z0-9]{3,16}$/, {
       message:
-        'Никнейм должен содержать от 3 до 16 символов, только латинские буквы, цифры и подчёркивания',
+        'Никнейм должен содержать от 3 до 16 символов, только латинские буквы и цифры',
     }),
   email: z.string().email('Некорректная почта').min(1, 'Введите email'),
   password: z
@@ -53,7 +53,7 @@ const RegisterScreen: NextPage = () => {
   } = useForm<FormData>({
     resolver: zodResolver(schema),
     defaultValues: {
-      type: 'student',
+      role: 'STUDENT',
     },
   });
 
@@ -97,18 +97,18 @@ const RegisterScreen: NextPage = () => {
             <Tabs.Root
               fitted
               size={'sm'}
-              defaultValue={watch('type')}
+              defaultValue={watch('role')}
               variant={'enclosed'}>
               <p className={'text-sm!'}>Тип аккаунта</p>
               <Tabs.List w={'full'}>
                 <Tabs.Trigger
-                  onClick={() => setValue('type', 'student')}
-                  value="student">
+                  onClick={() => setValue('role', 'STUDENT')}
+                  value="STUDENT">
                   Ученик
                 </Tabs.Trigger>
                 <Tabs.Trigger
-                  onClick={() => setValue('type', 'teacher')}
-                  value="teacher">
+                  onClick={() => setValue('role', 'TEACHER')}
+                  value="TEACHER">
                   Учитель
                 </Tabs.Trigger>
               </Tabs.List>

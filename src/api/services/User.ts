@@ -28,7 +28,7 @@ class UserService {
 
   public updateTokens(refresh: string) {
     return authService.patch<{ data: IUserTokens }>(
-      this.baseUrl + '/update-tkens',
+      this.baseUrl + '/update-tokens',
       { refreshToken: refresh },
     );
   }

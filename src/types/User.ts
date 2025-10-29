@@ -8,6 +8,7 @@ export interface IUserRegister {
   email: string;
   nickname: string;
   password: string;
+  role: 'STUDENT' | 'TEACHER';
 }
 
 export interface IUserRegisterRes extends IUser, IUserTokens {}
@@ -23,6 +24,7 @@ export interface IUser {
   nickname: string;
   email: string;
   confirmed: boolean;
+  roles: string[];
 }
 
 export interface IUserUpdate

@@ -2,32 +2,38 @@ import { NextPage } from 'next';
 import styles from './Question.module.scss';
 import Header from '../Header';
 import clsx from 'clsx';
-import Option from '../Option';
-import Image from 'next/image';
-import img from '@images/login-bg.jpg';
+import { socket, SOCKET_ACTION } from '@/api/socket';
+import { IQuestion } from '@/types/Question';
+import { useHoldingQuiz } from '@/store/holdingQuiz';
+import Option from '@/components/Option';
+import { useEffect, useState } from 'react';
+import { useTimer } from 'use-timer';
 
 const Question: NextPage = () => {
+  const [selected, setSelected] = useState<number[]>([]);
+  const { question, step } = useHoldingQuiz();
+
   return (
     <div className="wrapper-bg-blue">
       <Header />
       <div className="flex flex-grow">
         <div className={clsx('k-container', styles.content)}>
           <div className={styles.top}>
-            <h4 className={styles.text}>
-              Lorem ipsum dolor sit amet consectetur, adipisicing elit. Est
-              voluptatem, ut pariatur eum laborum delectus natus illum iste
-              obcaecati, doloribus, totam placeat repellat quia amet odit modi
-              at labore voluptatibus?
-            </h4>
-            <div className={styles.file}>
-              <Image loading="lazy" alt="img" src={img} />
-            </div>
+            <h4 className={styles.text}>{question?.text}</h4>
           </div>
           <div className={styles.bottom}>
-            <Option index={1} text="Ответ 1" />
-            <Option index={2} text="Ответ 2" />
-            <Option index={3} text="Ответ 3" />
-            <Option index={4} text="Ответ 4" />
+            {question?.options?.map((option, index) => (
+              <Option
+                number={++index}
+                key={option.id}
+                onCheck={value => {
+                  if (value) setSelected(prev => [...prev, option.id]);
+                  else
+                    setSelected(prev => prev.filter(item => item != option.id));
+                }}
+                text={option.text}
+              />
+            ))}
           </div>
         </div>
       </div>

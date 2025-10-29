@@ -1,5 +1,6 @@
 import { socket } from '@/api/socket';
 import Header from '@/components/Header';
+import Modals from '@/components/Modals';
 import { FC } from 'react';
 const LayoutMain: FC<
   Readonly<{
@@ -9,6 +10,7 @@ const LayoutMain: FC<
   return (
     <div className="wrapper-bg-blue">
       <Header />
+      <Modals />
       {children}
     </div>
   );
