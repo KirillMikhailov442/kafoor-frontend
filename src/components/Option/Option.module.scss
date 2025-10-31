@@ -7,10 +7,16 @@
   border-radius: 1rem;
   flex-basis: 48.5%;
   cursor: pointer;
-}
 
-.true {
-  background-color: #bbf7d0;
+  &Correct {
+    background-color: #bbf7d0;
+    outline: 2px solid #22c55e;
+  }
+
+  &Fail {
+    background-color: #fca5a5;
+    outline: 2px solid #f87171;
+  }
 }
 
 .letter {

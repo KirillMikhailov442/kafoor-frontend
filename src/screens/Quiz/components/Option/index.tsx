@@ -1,27 +1,52 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import styles from './Option.module.scss';
 import clsx from 'clsx';
+import { RadioGroup } from '@chakra-ui/react';
 
 interface OptionProps {
-  index: number;
+  number: number;
   text: string;
+  correct?: boolean;
+  isCorrect?: boolean;
+  isFail?: boolean;
+  disabledInput?: boolean;
+  id: number;
+  onDelete?: () => void;
+  onCheck?: (value: boolean) => void;
 }
 
 const BG_COLOR = ['#01ED5A', '#FF6263', '#FFBC02', '#63B3FF'];
 const LETTERS = ['A', 'B', 'C', 'D'];
 
-const Option: FC<OptionProps> = ({ text, index }) => {
+const Option: FC<OptionProps> = ({
+  text,
+  number,
+  isCorrect = false,
+  isFail = false,
+  id,
+}) => {
+  const [value, setValue] = useState(text);
+
   return (
-    <button className={clsx(styles.option)}>
+    <label
+      className={clsx(
+        styles.option,
+        isCorrect && styles.optionCorrect,
+        isFail && styles.optionFail,
+      )}>
       <div
         style={{
-          backgroundColor: BG_COLOR[index - 1],
+          backgroundColor: BG_COLOR[number - 1],
         }}
         className={styles.letter}>
-        {LETTERS[index - 1]}
+        {LETTERS[number - 1]}
       </div>
-      <h5 className={styles.text}>{text}</h5>
-    </button>
+      <p className={styles.text}>{text}</p>
+      <RadioGroup.Item key={id} value={String(id)}>
+        <RadioGroup.ItemHiddenInput />
+        <RadioGroup.ItemIndicator />
+      </RadioGroup.Item>
+    </label>
   );
 };
 

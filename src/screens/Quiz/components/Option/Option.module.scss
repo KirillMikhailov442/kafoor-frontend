@@ -7,6 +7,16 @@
   border-radius: 1rem;
   flex-basis: 48%;
   cursor: pointer;
+
+  &Correct {
+    background-color: #bbf7d0;
+    outline: 2px solid #22c55e;
+  }
+
+  &Fail {
+    background-color: #fca5a5;
+    outline: 2px solid #f87171;
+  }
 }
 
 .letter {
@@ -19,6 +29,10 @@
   font-size: 1.2rem;
   font-weight: 600;
   border-radius: 50%;
+}
+
+.text {
+  flex-grow: 1;
 }
 
 .active {

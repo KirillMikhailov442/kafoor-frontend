@@ -30,39 +30,20 @@ const ringCss = defineStyle({
 const Start: NextPage = () => {
   const quizId = Number(useParams<{ id: string }>().id);
   const { push } = useRouter();
-  const { start, setQuestion, setStep, step } = useHoldingQuiz();
+  const { start, setQuestion, setStep, step, setCountQuestions } =
+    useHoldingQuiz();
   const me = useRef<IUser>(null);
   const [members, setMembers] = useState<ITellMyYourself[]>([]);
   const clipboard = useClipboard({ value: window.location.href });
   const quiz = useGetQuizWithoutEnabled(
     quizId,
-    () => {
-      timer.reset();
+    ({ data }) => {
+      setCountQuestions(data.questions.length);
     },
     () => {
       push('/');
     },
   );
-
-  const timer = useTimer({
-    initialTime: quiz.data?.data.questions[step - 1]?.timeLimit,
-    endTime: 0,
-    interval: 1000,
-    timerType: 'DECREMENTAL',
-    onTimeUpdate: time => {
-      console.log('time: ', time);
-    },
-    onTimeOver: () => {
-      console.log(quiz.data?.data.questions[step - 1].options);
-
-      // setStep(step + 1);
-      // socket.send(SOCKET_ACTION.NEXT_QUESTION, {
-      //   quizId,
-      //   question: quiz.data?.data.questions[step],
-      // });
-    },
-  });
-
   const profile = useProfileWithoutEnabled(data => {
     me.current = { ...data.data, quizId };
     socket.emit(SOCKET_ACTION.JOIN_TO_QUIZ, {
@@ -75,8 +56,6 @@ const Start: NextPage = () => {
   const startQuiz = useStartQuiz(
     data => {
       localStorage.setItem('quiz', JSON.stringify(data.data));
-      setStep(1);
-      // timer.reset();
     },
     () => {
       toaster.warning({
@@ -86,6 +65,11 @@ const Start: NextPage = () => {
   );
 
   useEffect(() => {
+    socket.on(SOCKET_ACTION.START_QUIZ, (question: IQuestion) => {
+      setQuestion(question);
+      start();
+    });
+
     socket.on(SOCKET_ACTION.JOIN_TO_QUIZ, (data: ITellMyYourself) => {
       const hasUser = members.some(member => member.userId == data.userId);
       if (!hasUser) setMembers(prev => [...prev, data]);
@@ -105,17 +89,6 @@ const Start: NextPage = () => {
 
     socket.on(SOCKET_ACTION.LEAVE_FROM_QUIZ, (socketId: string) => {
       setMembers(prev => prev.filter(member => member.socketId != socketId));
-    });
-
-    socket.on(SOCKET_ACTION.START_QUIZ, (question: IQuestion) => {
-      if (
-        (JSON.parse(localStorage.getItem('quiz') || '') as IQuiz).userId ==
-        me.current?.id
-      )
-        return;
-      setQuestion(question);
-
-      start();
     });
 
     socket.on('disconnect', () => {

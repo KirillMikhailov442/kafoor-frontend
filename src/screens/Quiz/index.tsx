@@ -5,19 +5,13 @@ import Question from './components/Question';
 import Podium from './components/Podium';
 import Start from './components/Start';
 import { socket, SOCKET_ACTION } from '@/api/socket';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useHoldingQuiz } from '@/store/holdingQuiz';
 import { IQuestion } from '@/types/Question';
+
 socket.connect();
-
 const QuizScreen: NextPage = () => {
-  const { stage, setQuestion } = useHoldingQuiz();
-
-  useEffect(() => {
-    socket.on(SOCKET_ACTION.NEXT_QUESTION, (question: IQuestion) => {
-      setQuestion(question);
-    });
-  }, []);
+  const { stage } = useHoldingQuiz();
 
   if (stage == 'expectation') return <Start />;
   if (stage == 'passing') return <Question />;

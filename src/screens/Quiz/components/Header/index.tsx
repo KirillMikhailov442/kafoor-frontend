@@ -7,23 +7,60 @@ import { AbsoluteCenter, ProgressCircle } from '@chakra-ui/react';
 import { useHoldingQuiz } from '@/store/holdingQuiz';
 import { useTimer } from 'use-timer';
 import { socket, SOCKET_ACTION } from '@/api/socket';
-import { IQuestion } from '@/types/Question';
 import { IQuiz } from '@/types/Quiz';
+import { useParams } from 'next/navigation';
+import { useProfile } from '@/hooks/User';
 
 const Header: FC = () => {
-  const { question, step } = useHoldingQuiz();
-  const { time, start } = useTimer({
+  const { question, step, setStep, countQuestions, selectedOptions, finish } =
+    useHoldingQuiz();
+  const quizId = Number(useParams<{ id: string }>().id);
+  const profile = useProfile();
+
+  const { time, start, reset } = useTimer({
     initialTime: question?.timeLimit,
     endTime: 0,
     interval: 1000,
     timerType: 'DECREMENTAL',
+    onTimeOver: () => {
+      if (localStorage.getItem('quiz')) {
+        const corrects = (
+          JSON.parse(localStorage.getItem('quiz') || '') as IQuiz
+        ).questions[step].options
+          ?.filter(item => item.correct)
+          .map(item => item.id);
+
+        socket.emit(SOCKET_ACTION.TELL_CORRECT_ANSWER, { quizId, corrects });
+        setTimeout(() => {
+          if (step + 1 == countQuestions) {
+            socket.emit(SOCKET_ACTION.FINISH_QUIZ, { quizId });
+            finish();
+
+            return;
+          }
+          setStep(step + 1);
+          socket.emit(SOCKET_ACTION.NEXT_QUESTION, {
+            quizId,
+            question: (JSON.parse(localStorage.getItem('quiz') || '') as IQuiz)
+              .questions[step + 1],
+          });
+        }, 3000);
+      } else {
+        socket.emit(SOCKET_ACTION.SAY_MY_ANSWER, {
+          quizId,
+          userId: profile.data?.data.id,
+          answer: selectedOptions,
+        });
+      }
+    },
   });
 
   useEffect(() => {
+    reset();
     start();
   }, [step]);
 
-  if (!question?.timeLimit || !localStorage.getItem('quiz')) return 'loading';
+  if (!question) return 'loading';
 
   return (
     <header className={styles.header}>
@@ -38,11 +75,7 @@ const Header: FC = () => {
           </AbsoluteCenter>
         </ProgressCircle.Root>
         <p className={styles.step}>
-          {step + 1}/
-          {
-            (JSON.parse(localStorage.getItem('quiz') || '') as IQuiz)?.questions
-              ?.length
-          }
+          {step + 1}/{countQuestions}
         </p>
       </div>
     </header>

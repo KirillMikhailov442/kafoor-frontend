@@ -1,3 +1,5 @@
+import { IRole } from './Role';
+
 export interface IUserLogin {
   email: string;
   password: string;
@@ -24,8 +26,8 @@ export interface IUser {
   nickname: string;
   email: string;
   confirmed: boolean;
-  roles: string[];
+  roles: IRole[];
 }
 
 export interface IUserUpdate
-  extends Pick<IUser, 'name' | 'email' | 'nickname'> {}
+  extends Pick<IUser, 'name' | 'email' | 'nickname' | 'roles'> {}

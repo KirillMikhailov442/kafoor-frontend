@@ -8,9 +8,11 @@ import { useQuiz } from '@/store/quiz';
 interface OptionProps {
   number: number;
   text: string;
-  correct: boolean;
+  correct?: boolean;
   readOnly?: boolean;
-  name: string;
+  isCorrect?: boolean;
+  isFail?: boolean;
+  disabledInput?: boolean;
   onDelete?: () => void;
   onCheck?: (value: boolean) => void;
 }
@@ -23,8 +25,10 @@ const Option: FC<OptionProps> = ({
   number,
   correct,
   readOnly = false,
-  name,
   onCheck,
+  isCorrect = false,
+  isFail = false,
+  disabledInput = true,
   onDelete,
 }) => {
   const [value, setValue] = useState(text);
@@ -32,12 +36,16 @@ const Option: FC<OptionProps> = ({
   const { editOption, index } = useQuiz();
 
   useEffect(() => {
-    // @ts-ignore
     editOption(index, number - 1, { correct: checked, text: value });
   }, [value, checked]);
 
   return (
-    <label className={clsx(styles.option)}>
+    <label
+      className={clsx(
+        styles.option,
+        isCorrect && styles.optionCorrect,
+        isFail && styles.optionFail,
+      )}>
       <div
         style={{
           backgroundColor: BG_COLOR[number - 1],
@@ -51,6 +59,7 @@ const Option: FC<OptionProps> = ({
         maxLines={1}
         className={styles.text}
         textAlign="start"
+        disabled={disabledInput}
         value={value}
         placeholder={'Вариант ответа...'}
         onValueChange={details => setValue(details.value)}
@@ -62,12 +71,12 @@ const Option: FC<OptionProps> = ({
         <Editable.Input />
       </Editable.Root>
       <Checkbox.Root
+        readOnly={readOnly}
         className={styles.checkbox}
         colorPalette={'green'}
         checked={checked}
         size={'lg'}>
         <Checkbox.HiddenInput
-          name={name}
           onChange={e => {
             setChecked(e.target.checked);
             if (onCheck) onCheck(e.target.checked);

@@ -40,7 +40,7 @@ export const useQuiz = create<QuizStore>(set => ({
       index: newIndex,
     })),
   store: [],
-  setStore: data => set(state => ({...state, store: data})),
+  setStore: data => set(state => ({ ...state, store: data })),
   editQuiz: data =>
     set(state => ({
       ...state,
@@ -62,21 +62,28 @@ export const useQuiz = create<QuizStore>(set => ({
       const slug = uuidv4();
       return {
         lastChanged: `question@${slug}`,
-        store: [...state.store, { text: '', timeLimit: 10, scores: 10, slug, quizId: 0 }],
+        store: [
+          ...state.store,
+          { text: '', timeLimit: 10, scores: 10, slug, quizId: 0 },
+        ],
       };
     }),
   removeQuestion: (index: number) => {
     set(state => ({
       index: state.index == 0 ? 0 : --state.index,
-      lastChanged: state.store.find((_, i) => i == index)?.slug.includes('@') ? state.store.find((_, i) => i == index)?.slug : `question@${state.store.find((_, i) => i == index)?.slug}`,
+      lastChanged: state.store.find((_, i) => i == index)?.slug.includes('@')
+        ? state.store.find((_, i) => i == index)?.slug
+        : `question@${state.store.find((_, i) => i == index)?.slug}`,
       store: [...state.store.filter((_, i) => i != index)],
     }));
   },
   editQuestionText: (questionIndex, text) =>
     set(state => ({
-      lastChanged: state.store.find((_, i) => i == questionIndex)?.slug.includes('@') ? state.store.find((_, i) => i == questionIndex)?.slug : `question@${
-        state.store.find((_, i) => i == questionIndex)?.slug
-      }`,
+      lastChanged: state.store
+        .find((_, i) => i == questionIndex)
+        ?.slug.includes('@')
+        ? state.store.find((_, i) => i == questionIndex)?.slug
+        : `question@${state.store.find((_, i) => i == questionIndex)?.slug}`,
       store: [
         ...state.store.map((item, i) =>
           questionIndex == i ? { ...item, text } : item,
@@ -85,9 +92,11 @@ export const useQuiz = create<QuizStore>(set => ({
     })),
   editQuestionTimeLimit: (questionIndex, timeLimit) =>
     set(state => ({
-      lastChanged: state.store.find((_, i) => i == questionIndex)?.slug.includes('@') ? state.store.find((_, i) => i == questionIndex)?.slug :  `question@${
-        state.store.find((_, i) => i == questionIndex)?.slug
-      }`,
+      lastChanged: state.store
+        .find((_, i) => i == questionIndex)
+        ?.slug.includes('@')
+        ? state.store.find((_, i) => i == questionIndex)?.slug
+        : `question@${state.store.find((_, i) => i == questionIndex)?.slug}`,
       store: [
         ...state.store.map((item, i) =>
           questionIndex == i ? { ...item, timeLimit } : item,
@@ -96,9 +105,11 @@ export const useQuiz = create<QuizStore>(set => ({
     })),
   editQuestionScores: (questionIndex, scores) =>
     set(state => ({
-      lastChanged: state.store.find((_, i) => i == questionIndex)?.slug.includes('@') ? state.store.find((_, i) => i == questionIndex)?.slug : `question@${
-        state.store.find((_, i) => i == questionIndex)?.slug
-      }`,
+      lastChanged: state.store
+        .find((_, i) => i == questionIndex)
+        ?.slug.includes('@')
+        ? state.store.find((_, i) => i == questionIndex)?.slug
+        : `question@${state.store.find((_, i) => i == questionIndex)?.slug}`,
       store: [
         ...state.store.map((item, i) =>
           questionIndex == i ? { ...item, scores } : item,
@@ -107,9 +118,11 @@ export const useQuiz = create<QuizStore>(set => ({
     })),
   editQuestion: (questionIndex, data) =>
     set(state => ({
-      lastChanged: state.store.find((_, i) => i == questionIndex)?.slug.includes('@') ? state.store.find((_, i) => i == questionIndex)?.slug : `question@${
-        state.store.find((_, i) => i == questionIndex)?.slug
-      }`,
+      lastChanged: state.store
+        .find((_, i) => i == questionIndex)
+        ?.slug.includes('@')
+        ? state.store.find((_, i) => i == questionIndex)?.slug
+        : `question@${state.store.find((_, i) => i == questionIndex)?.slug}`,
       store: [
         ...state.store.map((item, i) => (questionIndex == i ? data : item)),
       ],
@@ -121,7 +134,10 @@ export const useQuiz = create<QuizStore>(set => ({
       if (!question) return state;
 
       const newOptions = question.options
-        ? [...question.options, { text: '', correct: false, slug: `option@${slug}` }]
+        ? [
+            ...question.options,
+            { text: '', correct: false, slug: `option@${slug}` },
+          ]
         : [{ text: '', correct: false, slug: `option@${slug}` }];
 
       const updatedQuestion = { ...question, options: newOptions };
@@ -140,9 +156,11 @@ export const useQuiz = create<QuizStore>(set => ({
       const newOptions = question.options?.filter((_, i) => index != i);
 
       return {
-        lastChanged: question.options?.find((_, i) => index == i)?.slug.includes('@') ? question.options?.find((_, i) => index == i)?.slug : `option@${
-          question.options?.find((_, i) => index == i)?.slug
-        }`,
+        lastChanged: question.options
+          ?.find((_, i) => index == i)
+          ?.slug.includes('@')
+          ? question.options?.find((_, i) => index == i)?.slug
+          : `option@${question.options?.find((_, i) => index == i)?.slug}`,
         store: state.store.map((item, i) =>
           i === questionIndex ? { ...item, options: newOptions } : item,
         ),
@@ -157,9 +175,11 @@ export const useQuiz = create<QuizStore>(set => ({
         i == index ? { ...item, ...data } : item,
       );
       return {
-        lastChanged: question.options?.find((_, i) => index == i)?.slug.includes('@') ? question.options?.find((_, i) => index == i)?.slug : `option@${
-          question.options?.find((_, i) => index == i)?.slug
-        }`,
+        lastChanged: question.options
+          ?.find((_, i) => index == i)
+          ?.slug.includes('@')
+          ? question.options?.find((_, i) => index == i)?.slug
+          : `option@${question.options?.find((_, i) => index == i)?.slug}`,
         store: state.store.map((item, i) =>
           i === questionIndex ? { ...item, options: newOptions } : item,
         ),

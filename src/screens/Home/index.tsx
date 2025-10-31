@@ -7,9 +7,17 @@ import QuizCard from '@/components/Cards/Quiz';
 import Loading from './Loading';
 import { useGetMyQuizzes } from '@/hooks/Quiz';
 import NoResult from './NoResult';
+import { useEffect } from 'react';
 
 const HomeScreen: NextPage = () => {
   const { data, isLoading, isSuccess } = useGetMyQuizzes();
+
+  useEffect(() => {
+    localStorage.removeItem('quiz');
+    localStorage.removeItem('holding-quiz');
+    localStorage.removeItem('count-questions');
+    localStorage.removeItem('selected');
+  }, []);
 
   if (isLoading) return <Loading />;
   if (data?.data.length == 0 && isSuccess) return <NoResult />;

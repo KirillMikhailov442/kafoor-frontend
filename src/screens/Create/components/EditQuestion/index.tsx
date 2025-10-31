@@ -42,6 +42,7 @@ const EditQuestion: FC = () => {
           {store.length > 0 &&
             store[index]?.options?.map((option, i) => (
               <Option
+                disabledInput={false}
                 key={option.slug}
                 number={i + 1}
                 correct={option.correct}
