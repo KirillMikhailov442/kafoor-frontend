@@ -17,8 +17,6 @@ import { toaster } from '@/components/ui/toaster';
 import avatar_img from '@images/kafoor-user.webp';
 import { useHoldingQuiz } from '@/store/holdingQuiz';
 import { IQuestion } from '@/types/Question';
-import { useTimer } from 'use-timer';
-import { IQuiz } from '@/types/Quiz';
 
 const ringCss = defineStyle({
   outlineWidth: '2px',
@@ -30,7 +28,7 @@ const ringCss = defineStyle({
 const Start: NextPage = () => {
   const quizId = Number(useParams<{ id: string }>().id);
   const { push } = useRouter();
-  const { start, setQuestion, setStep, step, setCountQuestions } =
+  const { start, setQuestion, setCountQuestions, setMembersQuiz } =
     useHoldingQuiz();
   const me = useRef<IUser>(null);
   const [members, setMembers] = useState<ITellMyYourself[]>([]);
@@ -56,6 +54,7 @@ const Start: NextPage = () => {
   const startQuiz = useStartQuiz(
     data => {
       localStorage.setItem('quiz', JSON.stringify(data.data));
+      setMembersQuiz(members);
     },
     () => {
       toaster.warning({

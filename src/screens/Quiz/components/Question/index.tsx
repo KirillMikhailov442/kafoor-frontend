@@ -10,17 +10,32 @@ import { socket, SOCKET_ACTION } from '@/api/socket';
 import { IQuestion } from '@/types/Question';
 import { RadioGroup } from '@chakra-ui/react';
 import Option from '../Option';
-
+import { IAnswer } from '@/types/Socket';
 const Question: NextPage = () => {
   const [selected, setSelected] = useState<number>(0);
-  const { question, step, setOptions, setQuestion, setStep, finish } =
-    useHoldingQuiz();
+  const {
+    question,
+    setOptions,
+    setQuestion,
+    nextStep,
+    finish,
+    setAnswer,
+    answers,
+  } = useHoldingQuiz();
   const profile = useProfile();
   const [corrects, setCorrects] = useState<number[]>([]);
 
   useEffect(() => {
     setOptions(selected);
   }, [selected]);
+
+  useEffect(() => {
+    socket.on(SOCKET_ACTION.SAY_MY_ANSWER, (data: IAnswer) => {
+      console.log('new data', data);
+      setAnswer(data);
+      console.log('answers', answers);
+    });
+  }, []);
 
   useEffect(() => {
     socket.on(SOCKET_ACTION.TELL_CORRECT_ANSWER, (data: number[]) => {
@@ -30,7 +45,7 @@ const Question: NextPage = () => {
     socket.on(SOCKET_ACTION.NEXT_QUESTION, (data: IQuestion) => {
       setCorrects([]);
       setQuestion(data);
-      setStep(step + 1);
+      nextStep();
       setOptions(0);
     });
 

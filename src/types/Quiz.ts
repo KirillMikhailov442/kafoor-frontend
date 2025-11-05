@@ -29,3 +29,13 @@ export interface IQuizStart {
   quizId: number;
   users: number[];
 }
+
+export interface IQuizMemberAnswer {
+  questionId: number;
+  answer: number;
+}
+
+export interface IQuizFinish {
+  quizId: number;
+  answers: IQuizMemberAnswer[];
+}

@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { Pencil, Play, Trash } from 'lucide-react';
 import { useModals } from '@/store/modals';
 import { useRouter } from 'next/navigation';
+import { parseDate } from '@/helpers/date';
 
 interface QuizCardProps
   extends Pick<IQuiz, 'id' | 'maxMembers' | 'name' | 'endedAt'> {
@@ -42,7 +43,7 @@ const QuizCard: FC<QuizCardProps> = ({
               <button
                 onClick={e => {
                   e.preventDefault();
-                  push(`/quizzes/${id}?start=1`);
+                  push(`/quizzes/${id}`);
                 }}
                 className={styles.start}>
                 <FaPlay size={20} />
@@ -53,9 +54,7 @@ const QuizCard: FC<QuizCardProps> = ({
         <Portal>
           <Menu.Positioner>
             <Menu.Content>
-              <Menu.Item
-                onClick={() => push(`/quizzes/${id}?start=1`)}
-                value="play">
+              <Menu.Item onClick={() => push(`/quizzes/${id}`)} value="play">
                 <Play size={18} /> Начать
               </Menu.Item>
               <Menu.Item onClick={() => push(`/create/${id}`)} value="edit">
@@ -79,20 +78,22 @@ const QuizCard: FC<QuizCardProps> = ({
   }
 
   return (
-    <div className={styles.card} role="listitem">
+    <Link href={`/ratings/${id}`} className={styles.card} role="listitem">
       <p className={styles.title}>{name}</p>
       <footer className={styles.footer}>
         <div className="flex gap-2">
           <Badge colorPalette={'blue'} rounded={'sm'}>
-            {countMembers}/{maxMembers} мест
+            {maxMembers} мест
           </Badge>
           <Badge colorPalette={'green'} rounded={'sm'}>
             {countQuestions} вопросов
           </Badge>
         </div>
-        <p className={styles.status}>Закончена (12.12.2020)</p>
+        <p className={styles.status}>
+          Закончена: {parseDate(endedAt, 'DD MMMM YYYY')}
+        </p>
       </footer>
-    </div>
+    </Link>
   );
 };
 

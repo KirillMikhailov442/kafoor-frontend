@@ -12,7 +12,7 @@ import { useParams } from 'next/navigation';
 import { useProfile } from '@/hooks/User';
 
 const Header: FC = () => {
-  const { question, step, setStep, countQuestions, selectedOptions, finish } =
+  const { question, step, countQuestions, selectedOptions, finish, nextStep } =
     useHoldingQuiz();
   const quizId = Number(useParams<{ id: string }>().id);
   const profile = useProfile();
@@ -35,19 +35,19 @@ const Header: FC = () => {
           if (step + 1 == countQuestions) {
             socket.emit(SOCKET_ACTION.FINISH_QUIZ, { quizId });
             finish();
-
-            return;
+          } else {
+            socket.emit(SOCKET_ACTION.NEXT_QUESTION, {
+              quizId,
+              question: (
+                JSON.parse(localStorage.getItem('quiz') || '') as IQuiz
+              ).questions[step + 1],
+            });
           }
-          setStep(step + 1);
-          socket.emit(SOCKET_ACTION.NEXT_QUESTION, {
-            quizId,
-            question: (JSON.parse(localStorage.getItem('quiz') || '') as IQuiz)
-              .questions[step + 1],
-          });
         }, 3000);
       } else {
         socket.emit(SOCKET_ACTION.SAY_MY_ANSWER, {
           quizId,
+          questionId: question?.id,
           userId: profile.data?.data.id,
           answer: selectedOptions,
         });

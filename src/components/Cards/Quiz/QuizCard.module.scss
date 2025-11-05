@@ -3,8 +3,11 @@
   padding: 1.5rem 1.5rem 10px 1.5rem;
   border-radius: 8px;
   border: 1px solid var(--secondary-300);
-  display: block;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
   text-align: start;
+  min-height: 150px;
 }
 
 .header {

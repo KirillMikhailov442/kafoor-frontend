@@ -1,7 +1,13 @@
 import { useMutation, useQuery } from 'react-query';
 import QuizService from '@api/services/Quiz';
 import { AxiosError } from 'axios';
-import { IQuiz, IQuizCreate, IQuizStart, IQuizUpdate } from '@/types/Quiz';
+import {
+  IQuiz,
+  IQuizCreate,
+  IQuizFinish,
+  IQuizStart,
+  IQuizUpdate,
+} from '@/types/Quiz';
 
 export const useGetMyQuizzes = (
   onSuccess?: (data: { data: IQuiz[] }) => void,
@@ -96,7 +102,7 @@ export const useFinishQuiz = (
 ) => {
   return useMutation({
     mutationKey: ['quiz-finish'],
-    mutationFn: () => QuizService.finish(),
+    mutationFn: (body: IQuizFinish) => QuizService.finish(body),
     onSuccess,
     onError,
   });

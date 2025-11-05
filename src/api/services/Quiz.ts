@@ -1,4 +1,10 @@
-import { IQuiz, IQuizCreate, IQuizStart, IQuizUpdate } from '@/types/Quiz';
+import {
+  IQuiz,
+  IQuizCreate,
+  IQuizFinish,
+  IQuizStart,
+  IQuizUpdate,
+} from '@/types/Quiz';
 import { quizService } from '../configs';
 
 class QuizService {
@@ -28,8 +34,8 @@ class QuizService {
     return quizService.post(`${this.baseUrl}/start`, body);
   }
 
-  public finish() {
-    return quizService.post(`${this.baseUrl}/finish`);
+  public finish(body: IQuizFinish) {
+    return quizService.post(`${this.baseUrl}/finish`, body);
   }
 }
 
