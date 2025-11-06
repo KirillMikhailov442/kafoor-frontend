@@ -107,3 +107,17 @@ export const useFinishQuiz = (
     onError,
   });
 };
+
+export const useRatingQuiz = (
+  id: number,
+  onSuccess?: (data: { data: string }) => void,
+  onError?: (error: AxiosError<{ message: string }>) => void,
+) => {
+  return useQuery({
+    queryKey: ['quiz-rating', id],
+    queryFn: () => QuizService.rating(id),
+    select: data => data.data,
+    onSuccess,
+    onError,
+  });
+};

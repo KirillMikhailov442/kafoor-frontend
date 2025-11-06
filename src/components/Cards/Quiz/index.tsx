@@ -19,7 +19,6 @@ const QuizCard: FC<QuizCardProps> = ({
   id,
   name,
   maxMembers,
-  countMembers,
   countQuestions,
   endedAt,
 }) => {

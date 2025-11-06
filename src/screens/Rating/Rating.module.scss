@@ -23,6 +23,9 @@
 .rating {
   margin-top: 2rem;
   flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
 
   &Item {
     display: flex;

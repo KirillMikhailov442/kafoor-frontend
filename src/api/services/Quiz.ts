@@ -37,6 +37,10 @@ class QuizService {
   public finish(body: IQuizFinish) {
     return quizService.post(`${this.baseUrl}/finish`, body);
   }
+
+  public rating(id: number) {
+    return quizService.get(`${this.baseUrl}/rating/${id}`);
+  }
 }
 
 export default new QuizService();

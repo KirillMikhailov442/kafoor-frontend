@@ -61,6 +61,9 @@ const Header: FC = () => {
         <nav className={styles.nav}>
           {!isMobile ? (
             <Button
+              hidden={
+                !profile.data?.data.roles.some(item => item.name == 'TEACHER')
+              }
               loading={createQuiz.isLoading}
               onClick={() =>
                 createQuiz.mutate({ name: 'Новая викторина', maxMembers: 5 })
@@ -73,6 +76,9 @@ const Header: FC = () => {
             </Button>
           ) : (
             <IconButton
+              hidden={
+                !profile.data?.data.roles.some(item => item.name == 'TEACHER')
+              }
               size={'lg'}
               colorPalette={'blue'}
               variant={'solid'}

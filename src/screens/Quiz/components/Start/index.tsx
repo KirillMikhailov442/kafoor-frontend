@@ -71,19 +71,34 @@ const Start: NextPage = () => {
 
     socket.on(SOCKET_ACTION.JOIN_TO_QUIZ, (data: ITellMyYourself) => {
       const hasUser = members.some(member => member.userId == data.userId);
+      if (
+        data.userId != me.current?.id &&
+        members.length >= quiz.data?.data.maxMembers
+      ) {
+        socket.emit(SOCKET_ACTION.EXPULSION_FROM_QUIZ, data.socketId);
+      }
       if (!hasUser) setMembers(prev => [...prev, data]);
-      if (data.userId != me.current?.id)
+      if (data.userId != me.current?.id) {
         socket.emit(SOCKET_ACTION.TELL_ABOUT_YOURSELF, {
           ...me.current,
           userId: me.current?.id,
           quizId,
         });
+      }
     });
 
     socket.on(SOCKET_ACTION.TELL_ABOUT_YOURSELF, (data: ITellMyYourself) => {
       if (data.userId == me.current?.id) return;
       const hasUser = members.some(member => member.userId == data.userId);
       if (!hasUser) setMembers(prev => [...prev, data]);
+    });
+
+    socket.on(SOCKET_ACTION.EXPULSION_FROM_QUIZ, () => {
+      socket.emit(SOCKET_ACTION.LEAVE_FROM_QUIZ, {
+        quizId,
+        socketId: socket.id,
+      });
+      push('/');
     });
 
     socket.on(SOCKET_ACTION.LEAVE_FROM_QUIZ, (socketId: string) => {

@@ -1,2 +1,2 @@
 export const SITE_NAME = 'Kafoor';
-export const SITE_DESCRIPTION = 'просто сайт';
+export const SITE_DESCRIPTION = 'Сайт online-викторина';

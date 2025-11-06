@@ -73,3 +73,15 @@ export const useProfileUpdate = (
     onError,
   });
 };
+
+export const useGetUsersByIds = (
+  onSuccess?: (data: { data: IUser[] }) => void,
+  onError?: (error: AxiosError<{ message: string }>) => void,
+) => {
+  return useMutation({
+    mutationKey: ['users-ids'],
+    mutationFn: (usersId: number[]) => userService.getUsersByIds(usersId),
+    onSuccess,
+    onError,
+  });
+};

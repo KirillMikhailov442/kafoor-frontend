@@ -1,4 +1,3 @@
-import { socket } from '@/api/socket';
 import Header from '@/components/Header';
 import Modals from '@/components/Modals';
 import { FC } from 'react';
