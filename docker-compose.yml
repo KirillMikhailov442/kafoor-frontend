@@ -1,0 +1,14 @@
+services:
+  nextjs:
+    image: kafoor-frontend
+    container_name: kafoor-frontend
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - NEXT_PUBLIC_USERS_API=${NEXT_PUBLIC_USERS_API}
+      - NEXT_PUBLIC_QUIZZES_API=${NEXT_PUBLIC_QUIZZES_API}
+      - NEXT_PUBLIC_SOCKET_IO_URL=${NEXT_PUBLIC_SOCKET_IO_URL}
+    env_file:
+      - .env
