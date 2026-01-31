@@ -1,46 +1,51 @@
-# Kafoor - service for conducting online quizzes
+# 🧠 Kafoor Frontend — Online Quiz Platform
+Kafoor is an open-source, free-to-use platform for creating and participating in real-time interactive quizzes. Designed with simplicity, accessibility, and clean code in mind, it’s perfect for teachers, students, and learners of all kinds.
+> 💡 No ads. No paywalls. 100% open-source.
 
-## ✨ Features
-* Division of functions between teachers and students
-* No ads or paid content
-* Open source
+## 📌 Key Features
+* 🎯 Create and manage quizzes (for teachers)
+* 🧑‍🎓 Join live quizzes in real time (for students)
+* 🔐 Secure authentication & authorization via JWT
+* 📊 Instant results display after quiz completion
+* 🌐 Fully responsive UI that works on all devices
+* 🧩 Modular architecture for easy scaling and maintenance
 
-## 🛠 Technologies
-* React 19
+## 🛠 Tech Stack
 * Next.js 15
-* Framer-motion
 * TypeScript
 * Zustand
-* React hook form, zod
-* React query
+* React Hook Form + Zod
+* React Query
+* Chakra UI v3 + Tailwind CSS + SASS (SCSS)
+* Framer Motion
 * UUID
-* Chakra UI v3
-* SASS (SCSS)
-* TailwindCSS
 
-## 🚀 Quick start
-1. Clone the repository:
+## 🚀 Quick Start
+Prerequisites
+Node.js 18+
+npm or yarn
+1. Clone the repository
 ```bash
-git clone https://github.com/KirillMikhailov442/virtually.git
+git clone https://github.com/KirillMikhailov442/kafoor-frontend.git
+cd kafoor-frontend
 ```
-
-2. Install dependencies:
+2. Install dependencies
 ```bash
 npm install
 # or
 yarn install
 ```
-
-3 Run the application:
+3. Run the development server
 ```bash
 npm run dev
 ```
-
-4. Open application:
-Open [http://localhost:3000](http://localhost:3000) in your browser
+4. Open your browser
+Visit [http://localhost:3000](http://localhost:3000)
 
 ## 📄 License
-The project is available under the MIT License. See the LICENSE file for details.
+This project is licensed under the MIT License.
+See the LICENSE file for details.
 
-<br/>
-Deviloped with ❤️ for easy video communication.
+---
+Built with ❤️ for education and collaborative learning.
+Contributions and feedback are always welcome! 🚀
