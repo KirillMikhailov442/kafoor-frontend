@@ -15,25 +15,20 @@ import {
   COOKIE_TOKEN_LIFESPAN,
   COOKIE_TOKEN_REFRESH_LIFESPAN,
 } from '@/constants/cookies';
+import { toaster } from '@/components/ui/toaster';
 
 const schema = z.object({
   email: z.string().email('Некорректная почта').min(1, 'Введите email'),
   password: z
     .string()
     .min(8, 'Пароль должен быть не менее 8 символов')
-    // .regex(/[A-Z]/, 'Пароль должен содержать хотя бы одну заглавную букву')
     .regex(/[a-z]/, 'Пароль должен содержать хотя бы одну строчную букву')
-    .regex(/[0-9]/, 'Пароль должен содержать хотя бы одну цифру')
-    .regex(
-      /[^A-Za-z0-9]/,
-      'Пароль должен содержать хотя бы один специальный символ',
-    ),
+    .regex(/[0-9]/, 'Пароль должен содержать хотя бы одну цифру'),
 });
 type FormData = z.infer<typeof schema>;
 
 const LoginScreen: NextPage = () => {
   const { push } = useRouter();
-  // const searchParams = useSearchParams();
   const {
     register,
     handleSubmit,
@@ -57,7 +52,11 @@ const LoginScreen: NextPage = () => {
       });
       setTimeout(() => push('/'), 0.255);
     },
-    () => {
+    error => {
+      toaster.create({
+        title: error.response?.data.message,
+        type: 'error',
+      });
       setError('email', {
         type: 'required',
         message: 'Неверная почта или пароль',

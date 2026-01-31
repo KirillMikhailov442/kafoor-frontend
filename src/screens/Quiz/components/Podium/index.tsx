@@ -43,9 +43,10 @@ const Podium: FC = () => {
     });
 
     const scoresOfMembers: IRating[] = [];
-    Object.entries(answers).forEach(([userId, answers]) => {
+    Object.entries(answers).forEach(([userId, answersList]) => {
       let scores = 0;
-      answers.forEach((item, index) => {
+      // @ts-ignore
+      answersList.forEach((item, index) => {
         if (corrects[index]?.includes(item.answer))
           scores += quiz.questions[index].scores;
       });
@@ -63,6 +64,7 @@ const Podium: FC = () => {
     if (rating.length == 0 || !quiz) return;
     socket.emit(SOCKET_ACTION.TELL_RATING, { quizId: quiz?.id, rating });
 
+    // @ts-ignore
     finishQuiz.mutate({ quizId, answers });
   }, [rating.length]);
 

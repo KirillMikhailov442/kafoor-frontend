@@ -1,4 +1,4 @@
-import { IRole } from './Role';
+import { Role } from './Role';
 
 export interface IUserLogin {
   email: string;
@@ -26,7 +26,7 @@ export interface IUser {
   nickname: string;
   email: string;
   confirmed: boolean;
-  roles: IRole[];
+  roles: Role[];
 }
 
 export interface IUserUpdate

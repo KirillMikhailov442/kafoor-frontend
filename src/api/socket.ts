@@ -1,7 +1,7 @@
 import io from 'socket.io-client';
 import Cookies from 'js-cookie';
 
-export const socket = io('http://localhost:8083', {
+export const socket = io(process.env.NEXT_PUBLIC_SOCKET_IO_URL as string, {
   transports: ['websocket', 'polling'],
   upgrade: true,
   forceNew: true,

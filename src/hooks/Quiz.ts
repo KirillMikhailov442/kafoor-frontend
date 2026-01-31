@@ -5,6 +5,7 @@ import {
   IQuiz,
   IQuizCreate,
   IQuizFinish,
+  IQuizRating,
   IQuizStart,
   IQuizUpdate,
 } from '@/types/Quiz';
@@ -16,6 +17,18 @@ export const useGetMyQuizzes = (
   return useQuery({
     queryKey: ['quizzes'],
     queryFn: () => QuizService.getAllOfUser(),
+    onSuccess,
+    onError,
+  });
+};
+
+export const useGetQuizzesMePartic = (
+  onSuccess?: (data: { data: IQuiz[] }) => void,
+  onError?: (error: AxiosError<{ message: string }>) => void,
+) => {
+  return useQuery({
+    queryKey: ['quizzes-participated'],
+    queryFn: () => QuizService.getQuizzesMeParticipated(),
     onSuccess,
     onError,
   });
@@ -110,7 +123,7 @@ export const useFinishQuiz = (
 
 export const useRatingQuiz = (
   id: number,
-  onSuccess?: (data: { data: string }) => void,
+  onSuccess?: (data: IQuizRating) => void,
   onError?: (error: AxiosError<{ message: string }>) => void,
 ) => {
   return useQuery({

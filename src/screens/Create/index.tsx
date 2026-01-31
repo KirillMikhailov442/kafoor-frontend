@@ -13,11 +13,10 @@ import { useEffect } from 'react';
 import { useQuiz } from '@/store/quiz';
 
 const CreateScreen: NextPage = () => {
-  const quizId = useParams<{ id: string }>().id;
+  const quizId = Number(useParams<{ id: string }>().id);
   const quiz = useGetQuizWithoutEnabled(quizId, ({ data }) => {
     editQuiz({ name: data.name, maxMembers: data.maxMembers });
-    setStore(data.questions);
-    
+    setStore(data.questions || []);
   });
   const { editQuiz, setStore } = useQuiz();
 

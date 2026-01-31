@@ -31,9 +31,7 @@ const Question: NextPage = () => {
 
   useEffect(() => {
     socket.on(SOCKET_ACTION.SAY_MY_ANSWER, (data: IAnswer) => {
-      console.log('new data', data);
       setAnswer(data);
-      console.log('answers', answers);
     });
   }, []);
 
@@ -86,8 +84,6 @@ const Question: NextPage = () => {
             variant={'outline'}
             readOnly={corrects.length > 0}
             onValueChange={details => {
-              console.log('details', details.value);
-
               setSelected(Number(details.value));
             }}>
             {question?.options?.map((option, index) => (

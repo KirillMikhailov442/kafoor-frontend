@@ -5,15 +5,14 @@ import styles from './Home.module.scss';
 import { NextPage } from 'next';
 import QuizCard from '@/components/Cards/Quiz';
 import Loading from './Loading';
-import { useGetMyQuizzes } from '@/hooks/Quiz';
+import { useGetMyQuizzes, useGetQuizzesMePartic } from '@/hooks/Quiz';
 import NoResult from './NoResult';
 import { useEffect } from 'react';
-import { useGetQuizzessOfMember } from '@/hooks/Members';
 import QuizOfMemberCard from '@/components/Cards/QuizOfMember';
 
 const HomeScreen: NextPage = () => {
   const { data, isLoading } = useGetMyQuizzes();
-  const quizzessOfMember = useGetQuizzessOfMember();
+  const quizzessOfMember = useGetQuizzesMePartic();
 
   useEffect(() => {
     localStorage.removeItem('quiz');
@@ -23,7 +22,7 @@ const HomeScreen: NextPage = () => {
   }, []);
 
   if (isLoading || quizzessOfMember.isLoading) return <Loading />;
-  if (data?.data.length == 0 && quizzessOfMember.data?.length == 0)
+  if (data?.data.length == 0 && quizzessOfMember.data?.data.length == 0)
     return <NoResult />;
 
   return (
@@ -37,20 +36,21 @@ const HomeScreen: NextPage = () => {
                 <QuizCard
                   {...quiz}
                   countMembers={quiz.members.length}
-                  countQuestions={quiz.questions.length}
+                  countQuestions={quiz.questions?.length || 0}
                   key={quiz.id}
                 />
               ))}
             </div>
           </section>
         )}
-        {quizzessOfMember.data && quizzessOfMember.data?.length > 0 && (
+        {quizzessOfMember.data && quizzessOfMember.data.data?.length > 0 && (
           <section className={styles.section}>
             <h3 className={styles.sectionTitle}>
               Викторины, в которых я участвовал
             </h3>
             <div className={styles.grid}>
-              {quizzessOfMember?.data?.map(quiz => (
+              {quizzessOfMember?.data.data?.map(quiz => (
+                // @ts-ignore
                 <QuizOfMemberCard key={quiz.id} {...quiz} />
               ))}
             </div>

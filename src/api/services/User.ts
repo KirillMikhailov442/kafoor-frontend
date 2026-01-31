@@ -10,16 +10,20 @@ import { authService } from '../configs';
 
 class UserService {
   private baseUrl = 'api/v1/users';
+  private authUrl = 'api/v1/auth';
 
   public login(body: IUserLogin) {
     return authService.post<{ data: IUserTokens }>(
-      `${this.baseUrl}/login`,
+      `${this.authUrl}/login`,
       body,
     );
   }
 
   public register(body: IUserRegister) {
-    return authService.post<{ data: IUserRegisterRes }>(this.baseUrl, body);
+    return authService.post<{ data: IUserRegisterRes }>(
+      `${this.authUrl}/register`,
+      body,
+    );
   }
 
   public update(body: IUserUpdate) {
@@ -28,7 +32,7 @@ class UserService {
 
   public updateTokens(refresh: string) {
     return authService.patch<{ data: IUserTokens }>(
-      `${this.baseUrl}/update-tokens`,
+      `${this.authUrl}/update-tokens`,
       { refreshToken: refresh },
     );
   }
@@ -38,7 +42,7 @@ class UserService {
   }
 
   public getUsersByIds(usersId: number[]) {
-    return authService.post(`${this.baseUrl}/by-ids`, { usersId });
+    return authService.post(`${this.baseUrl}/by-ids`, { ids: usersId });
   }
 }
 

@@ -2,8 +2,6 @@
 
 import { FC, useState } from 'react';
 import styles from './EditQuestion.module.scss';
-import Image from 'next/image';
-import img from '@images/login-bg.jpg';
 import Option from '@/components/Option';
 import { Editable } from '@chakra-ui/react';
 import { useQuiz } from '@/store/quiz';
@@ -11,6 +9,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 
 const EditQuestion: FC = () => {
   const { store, index, addOption, removeOption, editQuestionText } = useQuiz();
+
   const [text, setText] = useState(store[index]?.text);
   if (store.length <= 0) return <div className={styles.wrapper}></div>;
 
@@ -34,12 +33,9 @@ const EditQuestion: FC = () => {
             />
             <Editable.Textarea resize={'none'} rows={3} />
           </Editable.Root>
-          {/* <div className={styles.file}>
-            <Image loading="lazy" alt="img" src={img} />
-          </div> */}
         </div>
         <div className={styles.bottom}>
-          {store.length > 0 &&
+          {store?.length > 0 &&
             store[index]?.options?.map((option, i) => (
               <Option
                 disabledInput={false}

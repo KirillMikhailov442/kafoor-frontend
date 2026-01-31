@@ -58,6 +58,7 @@ export const useQuiz = create<QuizStore>(set => ({
       maxMembers: number,
     })),
   addQuestion: () =>
+    // @ts-ignore
     set(state => {
       const slug = uuidv4();
       return {
@@ -128,6 +129,7 @@ export const useQuiz = create<QuizStore>(set => ({
       ],
     })),
   addOption: questionIndex =>
+    // @ts-ignore
     set(state => {
       const question = state.store[questionIndex];
       const slug = uuidv4();

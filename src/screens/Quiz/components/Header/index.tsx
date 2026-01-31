@@ -12,7 +12,7 @@ import { useParams } from 'next/navigation';
 import { useProfile } from '@/hooks/User';
 
 const Header: FC = () => {
-  const { question, step, countQuestions, selectedOptions, finish, nextStep } =
+  const { question, step, countQuestions, selectedOptions, finish } =
     useHoldingQuiz();
   const quizId = Number(useParams<{ id: string }>().id);
   const profile = useProfile();

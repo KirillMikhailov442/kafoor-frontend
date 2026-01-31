@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import styles from './Option.module.scss';
 import clsx from 'clsx';
 import { Checkbox, Editable } from '@chakra-ui/react';
@@ -32,10 +32,11 @@ const Option: FC<OptionProps> = ({
   onDelete,
 }) => {
   const [value, setValue] = useState(text);
-  const [checked, setChecked] = useState<boolean>(correct);
+  const [checked, setChecked] = useState<boolean>(Boolean(correct));
   const { editOption, index } = useQuiz();
 
   useEffect(() => {
+    // @ts-ignore
     editOption(index, number - 1, { correct: checked, text: value });
   }, [value, checked]);
 

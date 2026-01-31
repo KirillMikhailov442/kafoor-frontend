@@ -36,7 +36,7 @@ export const useEditGuestion = (
   return useMutation({
     // @ts-ignore
     mutationKey: ['question-edit'],
-    mutationFn: (body: IQuestionUpdate) => QuestionService.edit(body),
+    mutationFn: (body: IQuestion) => QuestionService.edit(body),
     onSuccess,
     onError,
   });

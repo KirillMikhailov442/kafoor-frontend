@@ -12,7 +12,7 @@ const Questions: FC = () => {
   return (
     <aside className={styles.side}>
       <div ref={scrollRef} className={styles.sideContent}>
-        {store.map(({ id }, i) => (
+        {store?.map(({ id }, i) => (
           <Slide
             onClick={() => setIndex(i)}
             onDelete={() => removeQuestion(i)}

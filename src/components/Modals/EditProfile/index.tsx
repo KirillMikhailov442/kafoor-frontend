@@ -82,6 +82,7 @@ const EditProfileModal: FC = () => {
             <Dialog.Body>
               <form
                 ref={formRef}
+                // @ts-ignore
                 onSubmit={handleSubmit(data => update.mutate(data))}
                 className={styles.form}>
                 <Input

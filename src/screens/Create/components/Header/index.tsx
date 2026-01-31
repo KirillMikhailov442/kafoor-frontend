@@ -15,8 +15,8 @@ import { useQuiz } from '@/store/quiz';
 import { useDebounce } from 'use-debounce';
 import { useUpdateQuiz } from '@/hooks/Quiz';
 import { parseDate } from '@/helpers/date';
-import questionService from '@api/services/Question'
-import optionService from '@api/services/Option'
+import questionService from '@api/services/Question';
+import optionService from '@api/services/Option';
 
 const Header: FC = () => {
   const { push } = useRouter();
@@ -25,7 +25,6 @@ const Header: FC = () => {
     name,
     maxMembers,
     store,
-    index,
     lastChanged,
     editQuizName,
     editQuizMaxMembers,
@@ -50,30 +49,38 @@ const Header: FC = () => {
     setUpdatedId(prev => new Set([...prev, lastChanged]));
   }, [store]);
 
-
   useEffect(() => {
-    updatedIdD.forEach((item) => {
+    updatedIdD.forEach(item => {
       const [type, slug] = item.split('@');
-      
-      if(type == 'question'){
+
+      if (type == 'question') {
         const question = store.find(el => el.slug == slug);
-        if(question) return questionService.edit({...question, slug: item, quizId: Number(quizId)})
-          questionService.remove(item)
+        if (question)
+          return questionService.edit({
+            ...question,
+            slug: item,
+            quizId: Number(quizId),
+          });
+        questionService.remove(item);
       }
 
-      if(type == 'option'){
-        console.log('store', store);
-        console.log('item', item);
-        
-        
-        const question = store.find(el1 => el1.options?.some(el2 => el2.slug == item));
-        const option = question?.options?.find(el1 => el1.slug == item)
-        console.log('options', question?.options);   
-        console.log('option', option);
-        if(option) return optionService.edit({...option, questionSlug: question.slug.includes('@') ? question.slug : `question@${question.slug}`, slug: item})
-        else optionService.remove(item)
+      if (type == 'option') {
+        const question = store.find(el1 =>
+          el1.options?.some(el2 => el2.slug == item),
+        );
+        if (!question) return;
+        const option = question?.options?.find(el1 => el1.slug == item);
+        if (option)
+          return optionService.edit({
+            ...option,
+            questionSlug: question.slug.includes('@')
+              ? question.slug
+              : `question@${question.slug}`,
+            slug: item,
+          });
+        else optionService.remove(item);
       }
-    })
+    });
     updatedId.clear();
   }, [updatedIdD]);
 

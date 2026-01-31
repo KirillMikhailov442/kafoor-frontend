@@ -6,6 +6,7 @@ import Providers from '@/components/Layouts/Providers';
 import { Toaster } from '@/components/ui/toaster';
 import logo_img from '@images/logo.svg';
 import favicon from '@public/favicon.ico';
+
 const golosText = Golos_Text({
   subsets: ['latin'],
 });

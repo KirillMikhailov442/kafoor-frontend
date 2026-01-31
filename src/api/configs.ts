@@ -1,13 +1,12 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import UserService from '@api/services/User';
 import {
   COOKIE_TOKEN_LIFESPAN,
   COOKIE_TOKEN_REFRESH_LIFESPAN,
 } from '@/constants/cookies';
 
 const authService = axios.create({
-  baseURL: 'http://localhost:8081',
+  baseURL: process.env.NEXT_PUBLIC_USERS_API,
 });
 
 authService.interceptors.request.use(
@@ -53,7 +52,7 @@ authService.interceptors.response.use(
 
       try {
         const { data } = await axios.patch(
-          'http://localhost:8081/api/v1/users/update-tokens',
+          `${process.env.NEXT_PUBLIC_USERS_API}/api/v1/users/update-tokens`,
           { refreshToken },
         );
 
@@ -69,7 +68,7 @@ authService.interceptors.response.use(
       } catch (err) {
         Cookies.remove('token');
         Cookies.remove('refresh-token');
-        window.location.href = '/login';
+        // window.location.href = '/login';
         return Promise.reject(err);
       }
     }
@@ -77,8 +76,9 @@ authService.interceptors.response.use(
     return Promise.reject(error);
   },
 );
+
 const quizService = axios.create({
-  baseURL: 'http://localhost:8082',
+  baseURL: process.env.NEXT_PUBLIC_QUIZZES_API,
   headers: {
     Authorization:
       'Bearer' + (Cookies.get('token') ? Cookies.get('token') : null),

@@ -43,6 +43,7 @@ const Start: NextPage = () => {
     },
   );
   const profile = useProfileWithoutEnabled(data => {
+    // @ts-ignore
     me.current = { ...data.data, quizId };
     socket.emit(SOCKET_ACTION.JOIN_TO_QUIZ, {
       quizId,
@@ -73,7 +74,7 @@ const Start: NextPage = () => {
       const hasUser = members.some(member => member.userId == data.userId);
       if (
         data.userId != me.current?.id &&
-        members.length >= quiz.data?.data.maxMembers
+        members.length >= Number(quiz.data?.data.maxMembers)
       ) {
         socket.emit(SOCKET_ACTION.EXPULSION_FROM_QUIZ, data.socketId);
       }

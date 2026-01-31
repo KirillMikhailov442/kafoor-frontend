@@ -14,6 +14,10 @@ class QuizService {
     return quizService.get<IQuiz[]>(this.baseUrl + '/mine');
   }
 
+  public getQuizzesMeParticipated() {
+    return quizService.get<IQuiz[]>(`${this.baseUrl}/me/participated`);
+  }
+
   public create(body: IQuizCreate) {
     return quizService.post<IQuiz>(this.baseUrl, body);
   }

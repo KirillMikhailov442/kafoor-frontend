@@ -22,6 +22,7 @@ import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
 import { useProfile } from '@/hooks/User';
 import { useCreateQuiz } from '@/hooks/Quiz';
+import { Role } from '@/types/Role';
 
 const ringCss = defineStyle({
   outlineWidth: '2px',
@@ -61,9 +62,7 @@ const Header: FC = () => {
         <nav className={styles.nav}>
           {!isMobile ? (
             <Button
-              hidden={
-                !profile.data?.data.roles.some(item => item.name == 'TEACHER')
-              }
+              hidden={!profile.data?.data.roles.some(item => item == 'TEACHER')}
               loading={createQuiz.isLoading}
               onClick={() =>
                 createQuiz.mutate({ name: 'Новая викторина', maxMembers: 5 })
@@ -76,9 +75,7 @@ const Header: FC = () => {
             </Button>
           ) : (
             <IconButton
-              hidden={
-                !profile.data?.data.roles.some(item => item.name == 'TEACHER')
-              }
+              hidden={!profile.data?.data.roles.some(item => item == 'TEACHER')}
               size={'lg'}
               colorPalette={'blue'}
               variant={'solid'}

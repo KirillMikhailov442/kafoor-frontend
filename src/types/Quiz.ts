@@ -1,4 +1,5 @@
 import { IMember } from './Member';
+import { IOption } from './Option';
 import { IQuestion } from './Question';
 
 export interface IQuiz {
@@ -38,4 +39,20 @@ export interface IQuizMemberAnswer {
 export interface IQuizFinish {
   quizId: number;
   answers: IQuizMemberAnswer[];
+}
+
+export interface IQuizAnswer {
+  id: number;
+  member: IMember;
+  answer: IOption;
+}
+
+export interface IQuizRating {
+  id: number;
+  name: string;
+  startedAt: string;
+  endedAt: string;
+  members: IMember[];
+  questions: IQuestion[];
+  answers: IQuizAnswer[];
 }
